@@ -6,6 +6,7 @@ import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.test.context.TestConstructor
+import wolfdesk.app.ticket.command.domain.*
 
 @DataJpaTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
@@ -19,7 +20,7 @@ class TicketRepositoryTest(
             description = "티켓 내용",
             createdById = 1L,
             state = State.OPEN,
-            categoryId = 1L
+            supportCategoryId = 1L
         )
         val message = Message(
             body = "메시지 내용",

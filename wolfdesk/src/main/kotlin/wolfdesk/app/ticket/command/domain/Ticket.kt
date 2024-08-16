@@ -1,4 +1,4 @@
-package wolfdesk.app.ticket.domain
+package wolfdesk.app.ticket.command.domain
 
 import jakarta.persistence.*
 import org.springframework.data.domain.AbstractAggregateRoot
@@ -12,13 +12,17 @@ class Ticket(
     val id: Long = 0L
 ) : AbstractAggregateRoot<Ticket>() {
 
+    init {
+        registerEvent(TicketCreatedEvent(this))
+    }
+
     @JoinColumn(name = "ticket_id", nullable = false, updatable = false)
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
     val messages: MutableList<Message> = messages.toMutableList()
 
-    fun addMessage(message: Message) {
-        check(information.isOpened) { "열린 티켓에만 메시지를 남길 수 있습니다." }
+    fun add(message: Message) {
         messages.add(message)
+        registerEvent(MessageCreatedEvent(message))
     }
 
     fun open() {

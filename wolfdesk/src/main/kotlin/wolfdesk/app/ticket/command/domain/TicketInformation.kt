@@ -1,4 +1,4 @@
-package wolfdesk.app.ticket.domain
+package wolfdesk.app.ticket.command.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
@@ -13,7 +13,7 @@ data class TicketInformation(
     @Column(nullable = false, columnDefinition = "TEXT")
     var description: String,
     @Column(nullable = false)
-    val categoryId: Long,
+    val supportCategoryId: Long,
     @Column(nullable = false)
     val createdById: Long,
     @Enumerated(EnumType.STRING)

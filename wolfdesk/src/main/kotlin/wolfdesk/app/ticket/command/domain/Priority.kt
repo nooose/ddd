@@ -1,4 +1,4 @@
-package wolfdesk.app.ticket.domain
+package wolfdesk.app.ticket.command.domain
 
 enum class Priority {
     LOW,

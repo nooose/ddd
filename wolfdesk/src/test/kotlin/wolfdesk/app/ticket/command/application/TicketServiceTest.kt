@@ -61,8 +61,4 @@ class TicketServiceTest(
         repository.truncate()
         events.clear()
     }
-
-    afterTest {
-        repository.truncate()
-    }
 })

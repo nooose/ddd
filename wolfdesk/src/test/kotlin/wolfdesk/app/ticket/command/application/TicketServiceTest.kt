@@ -43,15 +43,30 @@ class TicketServiceTest(
 
         context("티켓을 생성하고 메시지를 추가하면") {
             service.create(command, 1)
-            service.addMessage(1, MessageCreateCommand("테스트 메시지"), 1)
+            service.addMessage(1, MessageCreateCommand("테스트 메시지1"), 1)
 
             it("메시지가 저장되고 추가 메시지 이벤트가 발행된다.") {
                 val ticket = repository.findByIdOrNull(1)!!
-                val event = events.first<MessageCreatedEvent>()
 
                 assertSoftly {
-                    event.message shouldNotBe 0
                     ticket.messages.size shouldBe 1
+                    events.count<MessageCreatedEvent>() shouldBe 1
+                }
+            }
+        }
+
+        context("티켓을 생성하고 메시지를 여러개 추가하면") {
+            service.create(command, 1)
+            service.addMessage(1, MessageCreateCommand("테스트 메시지1"), 1)
+            service.addMessage(1, MessageCreateCommand("테스트 메시지2"), 1)
+            service.addMessage(1, MessageCreateCommand("테스트 메시지3"), 1)
+
+            it("메시지가 저장되고 추가 메시지 이벤트가 발행된다.") {
+                val ticket = repository.findByIdOrNull(1)!!
+
+                assertSoftly {
+                    ticket.messages.size shouldBe 3
+                    events.count<MessageCreatedEvent>() shouldBe 3
                 }
             }
         }

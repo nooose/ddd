@@ -1,6 +1,12 @@
 spring:
   application:
     name: wolfdesk
+  datasource:
+    url: jdbc:h2:mem:${spring.application.name}
+    username: root
+  h2:
+    console:
+      enabled: true
 
   jpa:
     open-in-view: false

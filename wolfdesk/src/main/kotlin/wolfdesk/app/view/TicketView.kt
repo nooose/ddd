@@ -9,24 +9,24 @@ import com.vaadin.flow.router.Route
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import wolfdesk.app.ticket.command.application.TicketService
+import wolfdesk.app.ticket.query.TicketQuery
+import wolfdesk.app.ticket.query.TicketQueryService
 import wolfdesk.support.views.createPrimaryButton
 
 @PageTitle("울프데스크")
 @Route("/tickets", layout = BaseLayout::class)
 class TicketView(
-    private val ticketService: TicketService
+        private val ticketService: TicketService,
+        private val ticketQueryService: TicketQueryService,
 ) : VerticalLayout() {
 
     init {
-        val grid = Grid(TicketDto::class.java, false)
-        grid.addColumn(TicketDto::title).setHeader("티켓 제목")
+        val grid = Grid(TicketQuery::class.java, false)
+        grid.addColumn(TicketQuery::id).setHeader("ID")
+        grid.addColumn(TicketQuery::title).setHeader("제목")
+        grid.addColumn(TicketQuery::createdAt).setHeader("생성시간")
 
-        // TODO: 티켓 목록 출력
-        val tickets = listOf(
-            TicketDto("버그있어요"),
-            TicketDto("테스트"),
-            TicketDto("로그인 문의")
-        )
+        val tickets = ticketQueryService.getAll()
         grid.setItems(tickets)
         grid.isAllRowsVisible = true
 

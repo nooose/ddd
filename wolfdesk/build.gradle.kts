@@ -29,6 +29,7 @@ repositories {
 val vaadinVersion = "24.4.8"
 val kotestVersion = "5.9.1"
 val kotestSpringVersion = "1.3.0"
+val jdslVersion = "3.5.1"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -39,6 +40,10 @@ dependencies {
     implementation("com.vaadin:vaadin-spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly("com.h2database:h2")
+    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:${jdslVersion}")
+    implementation("com.linecorp.kotlin-jdsl:jpql-render:${jdslVersion}")
+    implementation("com.linecorp.kotlin-jdsl:spring-data-jpa-support:${jdslVersion}")
+
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")

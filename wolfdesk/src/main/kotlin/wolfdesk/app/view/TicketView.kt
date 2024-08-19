@@ -9,26 +9,32 @@ import com.vaadin.flow.router.Route
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import wolfdesk.app.ticket.command.application.TicketService
-import wolfdesk.app.ticket.query.TicketQuery
+import wolfdesk.app.ticket.query.TicketSimpleQuery
 import wolfdesk.app.ticket.query.TicketQueryService
+import wolfdesk.support.simpleFormat
 import wolfdesk.support.views.createPrimaryButton
 
 @PageTitle("울프데스크")
 @Route("/tickets", layout = BaseLayout::class)
 class TicketView(
-        private val ticketService: TicketService,
-        private val ticketQueryService: TicketQueryService,
+    private val ticketService: TicketService,
+    private val ticketQueryService: TicketQueryService,
 ) : VerticalLayout() {
 
     init {
-        val grid = Grid(TicketQuery::class.java, false)
-        grid.addColumn(TicketQuery::id).setHeader("ID")
-        grid.addColumn(TicketQuery::title).setHeader("제목")
-        grid.addColumn(TicketQuery::createdAt).setHeader("생성시간")
+        val grid = Grid(TicketSimpleQuery::class.java, false)
+        grid.addColumn(TicketSimpleQuery::id).setHeader("ID")
+        grid.addColumn(TicketSimpleQuery::title).setHeader("제목")
+        grid.addColumn { it.createdAt.simpleFormat() }.setHeader("생성시간")
 
         val tickets = ticketQueryService.getAll()
         grid.setItems(tickets)
         grid.isAllRowsVisible = true
+
+        grid.addItemClickListener { event ->
+            val ticketId = event.item.id
+            UI.getCurrent().navigate(TicketSingleView::class.java, ticketId)
+        }
 
         add(grid, createTicketButton())
     }

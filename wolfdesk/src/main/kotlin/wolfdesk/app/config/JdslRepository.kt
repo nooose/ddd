@@ -27,9 +27,13 @@ class JdslRepository(
 
     fun <T : Any> findOne(init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): T? {
         CurrentFunNameHolder.funName = Thread.currentThread().callerName
-        return entityManager.createQuery(init(Jpql()).toQuery(), jdslRenderContext)
-            .apply { maxResults = 1 }
-            .singleResult
+        return try {
+            entityManager.createQuery(init(Jpql()).toQuery(), jdslRenderContext)
+                .apply { maxResults = 1 }
+                .singleResult
+        } catch (e: Exception) {
+            null
+        }
     }
 
     fun <T : Any> findPage(pageable: Pageable, init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): Page<T> {

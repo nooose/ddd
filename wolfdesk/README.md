@@ -1,8 +1,20 @@
 # 울프데스크
+```mermaid
+flowchart 
+    A[울프데스크]
+    B[Tenant] --> A
+    C1[Agent1] --> B
+    C2[Agent2] --> B
+    D1[Customer1] --> C1 
+    D2[Customer2] --> C2
+    D3[Customer3] --> C2
+    D4[Customer4] --> C1
+    D5[Customer5] --> C1
+```
 #### 울프데스크: 서비스 제공자
 #### 테넌트(Tenant): 울프데스크의 고객인 회사
 #### 에이전트(Agent): 테넌트 회사의 직원(울프데스크 시스템을 사용해 고객의 문제를 해결하는 사람들)
-#### 고객(customer): 테넌트의 서비스나 제품을 사용하는 최종 사용자들
+#### 고객(Customer): 테넌트의 서비스나 제품을 사용하는 최종 사용자들
 
 - 결제 모델
   - 테넌트(Tenant)는 추가 비용 없이 필요한 만큼 에이전트(Agent)를 설정할 수 있습니다.

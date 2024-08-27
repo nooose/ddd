@@ -12,9 +12,9 @@ class AutoPilotService(
 ) {
 
     @EventListener
-    fun handle(event: TicketCreatedEvent) {
-        val ticketId = event.ticket.id
-        val agentId = assignPolicy.pickAssignee(ticketId)
+    fun handle(event: TicketOpenedEvent) {
+        val ticketId = event.ticketId
+        val agentId = assignPolicy.pickAssigner(ticketId)
         val ticket = getTicket(ticketId)
         ticket.assign(agentId)
     }

@@ -6,7 +6,7 @@ import java.util.Random
 
 @Component
 class RandomAssignPolicy : AssignPolicy {
-    override fun pickAssignee(ticketId: Long): Long {
+    override fun pickAssigner(ticketId: Long): Long {
         return RANDOM_INSTANCE.nextInt(100).toLong()
     }
 

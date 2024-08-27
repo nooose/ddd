@@ -25,6 +25,7 @@ class TicketService(
     fun open(ticketId: Long, principalId: Long) {
         val ticket = getTicket(ticketId)
         ticket.open(principalId)
+        ticketRepository.save(ticket)
     }
 
     fun addMessage(ticketId: Long, command: MessageCreateCommand, principalId: Long) {

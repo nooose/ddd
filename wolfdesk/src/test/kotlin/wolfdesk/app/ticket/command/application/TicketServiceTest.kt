@@ -7,7 +7,7 @@ import io.kotest.matchers.shouldNotBe
 import org.springframework.data.repository.findByIdOrNull
 import wolfdesk.app.EventRecords
 import wolfdesk.app.IntegrationTest
-import wolfdesk.app.ticket.command.domain.MessageCreatedEvent
+import wolfdesk.app.ticket.command.domain.MessageAddedEvent
 import wolfdesk.app.ticket.command.domain.TicketCreatedEvent
 import wolfdesk.app.ticket.command.domain.TicketRepository
 import wolfdesk.app.truncate
@@ -50,7 +50,7 @@ class TicketServiceTest(
 
                 assertSoftly {
                     ticket.messages.size shouldBe 1
-                    events.count<MessageCreatedEvent>() shouldBe 1
+                    events.count<MessageAddedEvent>() shouldBe 1
                 }
             }
         }
@@ -66,7 +66,7 @@ class TicketServiceTest(
 
                 assertSoftly {
                     ticket.messages.size shouldBe 3
-                    events.count<MessageCreatedEvent>() shouldBe 3
+                    events.count<MessageAddedEvent>() shouldBe 3
                 }
             }
         }

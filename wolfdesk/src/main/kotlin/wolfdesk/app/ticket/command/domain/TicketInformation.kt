@@ -23,9 +23,14 @@ data class TicketInformation(
     @Column(nullable = false)
     var state: State = State.NONE,
     var closedById: Long? = null,
+    var agentId: Long? = null,
     @Column(nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now(),
 ) {
+
+    fun isOwner(createdById: Long): Boolean {
+        return this.createdById == createdById
+    }
 
     val isOpened
         get() = state == State.OPEN

@@ -5,6 +5,7 @@ import jakarta.persistence.*
 @Table(name = "agent")
 @Entity
 class Agent(
+    val position: Position,
     @Column(nullable = false)
     val name: String,
     val tenantId: Long,

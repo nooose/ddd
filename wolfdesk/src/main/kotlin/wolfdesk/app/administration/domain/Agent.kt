@@ -11,4 +11,23 @@ class Agent(
     val tenantId: Long,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L
-)
+) {
+
+    companion object {
+        fun admin(name: String, tenantId: Long): Agent {
+            return Agent(
+                position = Position.ADMIN,
+                name = name,
+                tenantId = tenantId,
+            )
+        }
+
+        fun staff(name: String, tenantId: Long): Agent {
+            return Agent(
+                position = Position.STAFF,
+                name = name,
+                tenantId = tenantId,
+            )
+        }
+    }
+}

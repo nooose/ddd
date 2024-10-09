@@ -10,10 +10,8 @@ import com.vaadin.flow.router.BeforeEvent
 import com.vaadin.flow.router.HasUrlParameter
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
-import wolfdesk.app.ticket.query.TicketQuery
-import wolfdesk.app.ticket.query.TicketQueryService
-import wolfdesk.support.views.createNotification
-import wolfdesk.support.views.createSuccessButton
+import wolfdesk.ticket.query.TicketQuery
+import wolfdesk.ticket.query.TicketQueryService
 
 @PageTitle("울프데스크")
 @Route("/tickets", layout = BaseLayout::class)

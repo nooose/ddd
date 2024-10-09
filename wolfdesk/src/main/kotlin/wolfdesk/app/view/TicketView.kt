@@ -8,11 +8,10 @@ import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
-import wolfdesk.app.ticket.command.application.TicketService
-import wolfdesk.app.ticket.query.TicketSimpleQuery
-import wolfdesk.app.ticket.query.TicketQueryService
-import wolfdesk.support.simpleFormat
-import wolfdesk.support.views.createPrimaryButton
+import wolfdesk.base.support.simpleFormat
+import wolfdesk.ticket.command.application.TicketService
+import wolfdesk.ticket.query.TicketQueryService
+import wolfdesk.ticket.query.TicketSimpleQuery
 
 @PageTitle("울프데스크")
 @Route("/tickets", layout = BaseLayout::class)

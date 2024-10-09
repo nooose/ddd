@@ -2,9 +2,8 @@ package wolfdesk.app.view
 
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.dialog.Dialog
-import wolfdesk.app.ticket.command.application.TicketCreateCommand
-import wolfdesk.app.ticket.command.application.TicketService
-import wolfdesk.support.views.createPrimaryButton
+import wolfdesk.ticket.command.application.TicketCreateCommand
+import wolfdesk.ticket.command.application.TicketService
 
 class TicketDialog(
     private val ticketService: TicketService,

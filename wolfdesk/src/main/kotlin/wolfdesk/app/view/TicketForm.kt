@@ -1,6 +1,5 @@
 package wolfdesk.app.view
 
-import BindingFormLayout
 import com.vaadin.flow.component.textfield.TextArea
 import com.vaadin.flow.component.textfield.TextField
 

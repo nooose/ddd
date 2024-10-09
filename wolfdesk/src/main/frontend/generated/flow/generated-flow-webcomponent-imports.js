@@ -1,6 +1,5 @@
-import '@vaadin/polymer-legacy-adapter/style-modules.js';
-import '@vaadin/form-layout/src/vaadin-form-layout.js';
 import '@vaadin/common-frontend/ConnectionIndicator.js';
+import '@vaadin/polymer-legacy-adapter/style-modules.js';
 import '@vaadin/accordion/src/vaadin-accordion.js';
 import '@vaadin/details/src/vaadin-details.js';
 import '@vaadin/accordion/src/vaadin-accordion-panel.js';
@@ -29,6 +28,7 @@ import 'Frontend/generated/jar-resources/vaadin-time-picker/timepickerConnector.
 import '@vaadin/dialog/src/vaadin-dialog.js';
 import 'Frontend/generated/jar-resources/dndConnector.js';
 import '@vaadin/field-highlighter/src/vaadin-field-highlighter.js';
+import '@vaadin/form-layout/src/vaadin-form-layout.js';
 import '@vaadin/form-layout/src/vaadin-form-item.js';
 import '@vaadin/grid/src/vaadin-grid-column-group.js';
 import '@vaadin/grid/src/vaadin-grid.js';

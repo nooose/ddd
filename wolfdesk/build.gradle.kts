@@ -25,14 +25,24 @@ configurations {
 val vaadinVersion = "24.4.8"
 val kotestVersion = "5.9.1"
 val kotestSpringVersion = "1.3.0"
-val jdslVersion = "3.5.1"
+val jdslVersion = "3.5.2"
 
 subprojects {
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
-    apply(plugin = "org.springframework.boot")
-    apply(plugin = "io.spring.dependency-management")
-    apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
+    apply {
+        plugin("org.springframework.boot")
+        plugin("io.spring.dependency-management")
+        plugin("org.jetbrains.kotlin.jvm")
+        plugin("org.jetbrains.kotlin.plugin.spring")
+        plugin("org.jetbrains.kotlin.plugin.jpa")
+    }
+
+    tasks.jar {
+        enabled = true
+    }
+
+    tasks.bootJar {
+        enabled = false
+    }
 
     repositories {
         mavenCentral()
@@ -67,21 +77,33 @@ subprojects {
     }
 }
 
+tasks.bootJar {
+    archiveFileName = "application.jar"
+    enabled = true
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.vaadin:vaadin-spring-boot-starter")
-    implementation(project(":modules:base"))
-    implementation(project(":modules:ticket"))
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(group = "org.mockito")
     }
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    implementation(project(":modules:base"))
+    implementation(project(":modules:ticket"))
 }
 
 dependencyManagement {

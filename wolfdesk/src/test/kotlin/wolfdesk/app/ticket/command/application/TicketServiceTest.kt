@@ -7,10 +7,13 @@ import io.kotest.matchers.shouldNotBe
 import org.springframework.data.repository.findByIdOrNull
 import wolfdesk.app.EventRecords
 import wolfdesk.app.IntegrationTest
-import wolfdesk.app.ticket.command.domain.MessageAddedEvent
-import wolfdesk.app.ticket.command.domain.TicketCreatedEvent
-import wolfdesk.app.ticket.command.domain.TicketRepository
 import wolfdesk.app.truncate
+import wolfdesk.ticket.command.application.MessageCreateCommand
+import wolfdesk.ticket.command.application.TicketCreateCommand
+import wolfdesk.ticket.command.application.TicketService
+import wolfdesk.ticket.command.domain.MessageAddedEvent
+import wolfdesk.ticket.command.domain.TicketCreatedEvent
+import wolfdesk.ticket.command.domain.TicketRepository
 
 @IntegrationTest
 class TicketServiceTest(

@@ -6,7 +6,7 @@ import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.test.context.TestConstructor
-import wolfdesk.app.ticket.command.domain.*
+import wolfdesk.ticket.command.domain.*
 
 @DataJpaTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)

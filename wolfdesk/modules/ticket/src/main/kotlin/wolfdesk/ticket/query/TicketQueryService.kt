@@ -2,7 +2,7 @@ package wolfdesk.ticket.query
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import wolfdesk.base.config.JdslRepository
+import wolfdesk.base.jpa.JdslRepository
 import wolfdesk.ticket.command.domain.Ticket
 import wolfdesk.ticket.command.domain.TicketInformation
 

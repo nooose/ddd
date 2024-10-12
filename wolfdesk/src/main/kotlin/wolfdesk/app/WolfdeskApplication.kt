@@ -8,18 +8,24 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EntityScan(
     basePackages = [
+        "wolfdesk.agent.domain",
+        "wolfdesk.tenant.domain",
         "wolfdesk.ticket.command.domain",
     ]
 )
 @EnableJpaRepositories(
     basePackages = [
+        "wolfdesk.member",
+        "wolfdesk.tenant",
         "wolfdesk.ticket.command",
     ]
 )
 @SpringBootApplication(
     scanBasePackages = [
-        "wolfdesk.ticket",
         "wolfdesk.base",
+        "wolfdesk.member",
+        "wolfdesk.tenant",
+        "wolfdesk.ticket",
     ]
 )
 class WolfdeskApplication

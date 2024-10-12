@@ -7,14 +7,18 @@ import wolfdesk.ticket.command.domain.Message
 import wolfdesk.ticket.command.domain.Ticket
 import wolfdesk.ticket.command.domain.TicketInformation
 import wolfdesk.ticket.command.domain.TicketRepository
+import wolfdesk.ticket.integrate.TicketVerification
 
 @Transactional
 @Service
 class TicketService(
+    private val ticketVerification: TicketVerification,
     private val ticketRepository: TicketRepository,
 ) {
 
-    fun create(command: TicketCreateCommand, principalId: Long) {
+    fun create(tenantId: Long, command: TicketCreateCommand, principalId: Long) {
+        ticketVerification.validate(tenantId, command.supportCategoryId, principalId)
+
         val info = TicketInformation(
             title = command.title,
             description = command.description,

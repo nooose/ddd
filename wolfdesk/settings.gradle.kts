@@ -1,4 +1,8 @@
 rootProject.name = "app"
 
-include("modules:base")
-include("modules:ticket")
+include(
+    "modules:base",
+    "modules:member",
+    "modules:tenant",
+    "modules:ticket",
+)

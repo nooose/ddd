@@ -103,6 +103,8 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     implementation(project(":modules:base"))
+    implementation(project(":modules:member"))
+    implementation(project(":modules:tenant"))
     implementation(project(":modules:ticket"))
 }
 

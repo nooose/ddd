@@ -20,7 +20,7 @@ class TicketDialog(
         return createPrimaryButton("저장") {
             form.bindOrNull()?.let {
                 val command = TicketCreateCommand(it.title, it.description, 1)
-                ticketService.create(command, 1)
+                ticketService.create(1, command, 1)
                 close()
                 reloadComponents()
             }

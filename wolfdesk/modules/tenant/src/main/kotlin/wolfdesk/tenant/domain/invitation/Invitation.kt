@@ -11,7 +11,7 @@ class Invitation(
     val inviteeId: Long,
     @Enumerated(EnumType.STRING)
     val type: InvitationType,
-
+    val message: String = "",
     var status: InvitationStatus = InvitationStatus.SENT,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,

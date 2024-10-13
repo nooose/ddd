@@ -17,7 +17,7 @@ class TenantEventPublishingAdapter(
     fun convert(event: InvitationDomainEvent) {
         val systemEvent = when (event) {
             is InvitedEvent -> null
-            is TenantInviteConfirmedEvent -> InvitationSystemEvent(event.id, InvitationSystemEvent.Type.ACCEPTED)
+            is TenantInviteConfirmedEvent -> InvitationSystemEvent(event.id, 1, 1, InvitationSystemEvent.Type.ACCEPTED)
             else -> null
         }
 

@@ -2,5 +2,11 @@ package wolfdesk.base.event
 
 data class TenantSystemEvent(
     val tenantId: Long,
-    val type: String,
-) : SystemEvent()
+    val type: Type,
+) : SystemEvent() {
+    enum class Type {
+        CREATED,
+        DELETED,
+        UPDATED,
+    }
+}

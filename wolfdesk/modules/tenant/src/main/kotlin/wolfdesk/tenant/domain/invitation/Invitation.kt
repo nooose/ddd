@@ -25,5 +25,8 @@ class Invitation(
         check(this.inviteeId == inviteeId) { "초대 받은자만 변경할 수 있습니다." }
         check(status == InvitationStatus.SENT) { "초대 상태를 변경할 수 없습니다." }
         this.status = status
+        if (status.isAccepted) {
+            registerEvent(TenantInviteConfirmedEvent(id, status))
+        }
     }
 }

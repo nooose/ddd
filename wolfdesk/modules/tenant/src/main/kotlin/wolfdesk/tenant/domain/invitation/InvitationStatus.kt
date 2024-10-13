@@ -4,4 +4,8 @@ enum class InvitationStatus {
     SENT,
     ACCEPTED,
     REJECTED,
+    ;
+
+    val isAccepted: Boolean
+        get() = this == ACCEPTED
 }

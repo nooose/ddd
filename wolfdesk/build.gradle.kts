@@ -3,7 +3,6 @@ plugins {
     kotlin("plugin.spring") version "1.9.24"
     id("org.springframework.boot") version "3.3.2"
     id("io.spring.dependency-management") version "1.1.6"
-    id("com.vaadin") version "24.4.8"
     kotlin("plugin.jpa") version "1.9.24"
 }
 
@@ -22,7 +21,6 @@ configurations {
     }
 }
 
-val vaadinVersion = "24.4.8"
 val kotestVersion = "5.9.1"
 val kotestSpringVersion = "1.3.0"
 val jdslVersion = "3.5.2"
@@ -89,7 +87,6 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("com.vaadin:vaadin-spring-boot-starter")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
@@ -106,12 +103,6 @@ dependencies {
     implementation(project(":modules:member"))
     implementation(project(":modules:tenant"))
     implementation(project(":modules:ticket"))
-}
-
-dependencyManagement {
-    imports {
-        mavenBom("com.vaadin:vaadin-bom:$vaadinVersion")
-    }
 }
 
 kotlin {

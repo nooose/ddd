@@ -16,8 +16,8 @@ class TicketService(
     private val ticketRepository: TicketRepository,
 ) {
 
-    fun create(tenantId: Long, command: TicketCreateCommand, principalId: Long) {
-        ticketVerification.validate(tenantId, command.supportCategoryId, principalId)
+    fun create(command: TicketCreateCommand, principalId: Long) {
+        ticketVerification.validate(command.tenantId, command.supportCategoryId, principalId)
 
         val info = TicketInformation(
             title = command.title,

@@ -6,6 +6,7 @@ data class TicketCreateCommand(
     @field:NotBlank
     val title: String,
     val description: String,
+    val tenantId: Long,
     val supportCategoryId: Long,
 )
 

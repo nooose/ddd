@@ -5,9 +5,9 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.springframework.data.repository.findByIdOrNull
+import wolfdesk.app.DatabaseCleanerUtil
 import wolfdesk.app.EventRecords
 import wolfdesk.app.IntegrationTest
-import wolfdesk.app.truncate
 import wolfdesk.ticket.command.application.MessageCreateCommand
 import wolfdesk.ticket.command.application.TicketCreateCommand
 import wolfdesk.ticket.command.application.TicketService
@@ -23,10 +23,10 @@ class TicketServiceTest(
 ) : DescribeSpec({
 
     describe("티켓 기능") {
-        val command = TicketCreateCommand("티켓 제목", "티켓내용", 1)
+        val command = TicketCreateCommand("티켓 제목", "티켓내용", 1, 1)
 
         context("티켓을 저장하면") {
-            service.create(1, command, 1)
+            service.create(command, 1)
 
             it("티켓 생성 이벤트가 발행된다.") {
                 val event = events.first<TicketCreatedEvent>()
@@ -35,8 +35,8 @@ class TicketServiceTest(
         }
 
         context("티켓을 여러개 저장하면") {
-            service.create(1, command, 1)
-            service.create(1, command, 1)
+            service.create( command, 1)
+            service.create(command, 1)
 
             it("티켓 전체를 조회할 수 있다.") {
                 val tickets = repository.findAll()
@@ -45,7 +45,7 @@ class TicketServiceTest(
         }
 
         context("티켓을 생성하고 메시지를 추가하면") {
-            service.create(1, command, 1)
+            service.create(command, 1)
             service.addMessage(1, MessageCreateCommand("테스트 메시지1"), 1)
 
             it("메시지가 저장되고 추가 메시지 이벤트가 발행된다.") {
@@ -59,7 +59,7 @@ class TicketServiceTest(
         }
 
         context("티켓을 생성하고 메시지를 여러개 추가하면") {
-            service.create(1, command, 1)
+            service.create(command, 1)
             service.addMessage(1, MessageCreateCommand("테스트 메시지1"), 1)
             service.addMessage(1, MessageCreateCommand("테스트 메시지2"), 1)
             service.addMessage(1, MessageCreateCommand("테스트 메시지3"), 1)
@@ -76,7 +76,7 @@ class TicketServiceTest(
     }
 
     afterEach {
-        repository.truncate()
+        DatabaseCleanerUtil.truncate()
         events.clear()
     }
 })

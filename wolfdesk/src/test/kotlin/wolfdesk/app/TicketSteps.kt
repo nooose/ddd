@@ -1,15 +1,12 @@
 package wolfdesk.app
 
-import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
-import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import io.restassured.path.json.JsonPath
 import io.restassured.response.Response
-import org.springframework.http.HttpStatus
+import wolfdesk.ticket.command.application.MessageCreateCommand
 import wolfdesk.ticket.command.application.TicketCreateCommand
 
-fun 티켓생성요청(command: TicketCreateCommand): Response {
+fun 티켓생성(command: TicketCreateCommand): Response {
     return Given {
         body(command)
     } When {
@@ -17,7 +14,7 @@ fun 티켓생성요청(command: TicketCreateCommand): Response {
     }
 }
 
-fun 티켓목록조회요청(): Response {
+fun 티켓목록조회(): Response {
     return Given {
         and()
     } When {
@@ -25,10 +22,34 @@ fun 티켓목록조회요청(): Response {
     }
 }
 
-infix fun Response.status(status: HttpStatus): JsonPath {
-    return this Then {
-        statusCode(status.value())
-    } Extract {
-        jsonPath()
+fun 티켓상세조회(ticketId: Long): Response {
+    return Given {
+        and()
+    } When {
+        get("/tickets/$ticketId")
+    }
+}
+
+fun 티켓상세조회(ticketLocation: String): Response {
+    return Given {
+        and()
+    } When {
+        get(ticketLocation)
+    }
+}
+
+fun 메시지등록(ticketId: Long, command: MessageCreateCommand): Response {
+    return Given {
+        body(command)
+    } When {
+        post("/tickets/${ticketId}/messages")
+    }
+}
+
+fun 메시지등록(ticketLocation: String, command: MessageCreateCommand): Response {
+    return Given {
+        body(command)
+    } When {
+        post("$ticketLocation/messages")
     }
 }

@@ -11,5 +11,6 @@ data class TicketCreateCommand(
 )
 
 data class MessageCreateCommand(
+    @field:NotBlank
     val body: String,
 )

@@ -1,10 +1,15 @@
-package wolfdesk.app.ticket
+package wolfdesk.app
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.restassured.RestAssured
 import io.restassured.builder.RequestSpecBuilder
 import io.restassured.builder.ResponseSpecBuilder
 import io.restassured.filter.log.LogDetail
+import io.restassured.module.kotlin.extensions.Extract
+import io.restassured.module.kotlin.extensions.Then
+import io.restassured.path.json.JsonPath
+import io.restassured.response.Response
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 
 fun initRestAssured(port: Int) {
@@ -18,7 +23,14 @@ fun initRestAssured(port: Int) {
         .build()
 }
 
-fun objectMapper() : ObjectMapper {
-    val objectMapper = ObjectMapper()
-    return objectMapper
+infix fun Response.status(status: HttpStatus): JsonPath {
+    return this Then {
+        statusCode(status.value())
+    } Extract {
+        jsonPath()
+    }
+}
+
+fun Response.header(header: HttpHeaders): String {
+    return Extract { header(header) }
 }

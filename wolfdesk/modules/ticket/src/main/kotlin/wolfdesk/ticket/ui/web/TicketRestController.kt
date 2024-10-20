@@ -1,12 +1,14 @@
 package wolfdesk.ticket.ui.web
 
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri
+import wolfdesk.base.api.ApiResponse
+import wolfdesk.ticket.command.application.MessageCreateCommand
 import wolfdesk.ticket.command.application.TicketCreateCommand
 import wolfdesk.ticket.command.application.TicketService
+import wolfdesk.ticket.query.TicketQuery
 import wolfdesk.ticket.query.TicketQueryService
 import wolfdesk.ticket.query.TicketSimpleQuery
 
@@ -17,12 +19,33 @@ class TicketRestController(
 ) {
 
     @PostMapping("/tickets")
-    fun createTicket(@RequestBody @Valid command: TicketCreateCommand) {
-        ticketService.create(command, 1)
+    fun createTicket(@RequestBody @Valid command: TicketCreateCommand): ResponseEntity<ApiResponse<Unit>> {
+        val ticketId = ticketService.create(command, 1)
+        val uri = fromCurrentRequestUri().path("/$ticketId").build().toUri()
+        val body = ApiResponse.success<Unit>()
+        return ResponseEntity.created(uri).body(body)
+    }
+
+    @PostMapping("/tickets/{ticketId}/messages")
+    fun addMessage(
+        @PathVariable("ticketId") ticketId: Long,
+        @RequestBody @Valid command: MessageCreateCommand
+    ): ApiResponse<Unit> {
+        ticketService.addMessage(ticketId, command, 1)
+        return ApiResponse.success()
+    }
+
+    @GetMapping("/tickets/{ticketId}")
+    fun getTickets(
+        @PathVariable("ticketId") ticketId: Long,
+    ): ApiResponse<TicketQuery> {
+        val response = ticketQueryService.getOne(ticketId)
+        return ApiResponse.success(response)
     }
 
     @GetMapping("/tickets")
-    fun getTickets(): List<TicketSimpleQuery> {
-        return ticketQueryService.getAll()
+    fun getTickets(): ApiResponse<List<TicketSimpleQuery>> {
+        val response = ticketQueryService.getAll()
+        return ApiResponse.success(response)
     }
 }

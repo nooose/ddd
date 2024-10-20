@@ -16,7 +16,10 @@ class TicketService(
     private val ticketRepository: TicketRepository,
 ) {
 
-    fun create(command: TicketCreateCommand, principalId: Long) {
+    /**
+     * @return 티켓 ID
+     */
+    fun create(command: TicketCreateCommand, principalId: Long): Long {
         ticketVerification.validate(command.tenantId, command.supportCategoryId, principalId)
 
         val info = TicketInformation(
@@ -27,6 +30,7 @@ class TicketService(
         )
         val ticket = Ticket(info)
         ticketRepository.save(ticket)
+        return ticket.id
     }
 
     fun open(ticketId: Long, principalId: Long) {

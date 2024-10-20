@@ -24,6 +24,7 @@ configurations {
 val kotestVersion = "5.9.1"
 val kotestSpringVersion = "1.3.0"
 val jdslVersion = "3.5.2"
+val jjwtVersion = "0.12.6"
 
 subprojects {
     apply {
@@ -47,6 +48,10 @@ subprojects {
     }
 
     dependencies {
+        implementation("io.jsonwebtoken:jjwt-api:${jjwtVersion}")
+        runtimeOnly("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
+        runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
+        implementation("org.springframework.boot:spring-boot-starter-security")
         implementation("org.springframework.boot:spring-boot-starter-actuator")
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -63,6 +68,7 @@ subprojects {
             exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
             exclude(group = "org.mockito")
         }
+        testImplementation("org.springframework.security:spring-security-test")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
         testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
         testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")

@@ -1,6 +1,7 @@
 package wolfdesk.app.ticket.acceptance
 
 import io.kotest.core.annotation.DisplayName
+import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
@@ -15,6 +16,7 @@ class TicketAcceptanceTest(
     @LocalServerPort
     private val port: Int
 ) : BehaviorSpec({
+    isolationMode = IsolationMode.InstancePerLeaf
 
     beforeSpec {
         initRestAssured(port)
@@ -36,6 +38,7 @@ class TicketAcceptanceTest(
     Given("티켓을 생성하고") {
         val command = createTicketCreateCommandFixture()
         val location = 티켓생성(command).header(HttpHeaders.LOCATION)
+        var messageId = ""
 
         When("티켓에 메시지를 입력하면") {
             val messageCommand = createMessageAddCommandFixture()
@@ -44,6 +47,16 @@ class TicketAcceptanceTest(
             Then("메시지를 확인할 수 있다.") {
                 val response = 티켓상세조회(location) status HttpStatus.OK
                 response.getList<Any>("data.messages") shouldHaveSize 1
+                messageId = response.getString("data.messages[0].id")
+            }
+        }
+
+        When("메시지를 삭제하면") {
+            메시지삭제(location, messageId)
+
+            Then("메시지를 확인할 수 없다.") {
+                val response = 티켓상세조회(location) status HttpStatus.OK
+                response.getList<Any>("data.messages") shouldHaveSize 0
             }
         }
     }

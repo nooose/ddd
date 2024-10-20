@@ -53,3 +53,11 @@ fun 메시지등록(ticketLocation: String, command: MessageCreateCommand): Resp
         post("$ticketLocation/messages")
     }
 }
+
+fun 메시지삭제(ticketLocation: String, messageId: String): Response {
+    return Given {
+        and()
+    } When {
+        delete("$ticketLocation/messages/$messageId")
+    }
+}

@@ -11,6 +11,7 @@ import wolfdesk.ticket.command.application.TicketService
 import wolfdesk.ticket.query.TicketQuery
 import wolfdesk.ticket.query.TicketQueryService
 import wolfdesk.ticket.query.TicketSimpleQuery
+import java.util.*
 
 @RestController
 class TicketRestController(
@@ -32,6 +33,15 @@ class TicketRestController(
         @RequestBody @Valid command: MessageCreateCommand
     ): ApiResponse<Unit> {
         ticketService.addMessage(ticketId, command, 1)
+        return ApiResponse.success()
+    }
+
+    @DeleteMapping("/tickets/{ticketId}/messages/{messageId}")
+    fun addMessage(
+        @PathVariable("ticketId") ticketId: Long,
+        @PathVariable("messageId") messageId: UUID,
+    ): ApiResponse<Unit> {
+        ticketService.deleteMessage(ticketId, messageId = messageId, 1)
         return ApiResponse.success()
     }
 

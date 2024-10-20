@@ -8,6 +8,7 @@ import wolfdesk.ticket.command.domain.Ticket
 import wolfdesk.ticket.command.domain.TicketInformation
 import wolfdesk.ticket.command.domain.TicketRepository
 import wolfdesk.ticket.integrate.TicketVerification
+import java.util.*
 
 @Transactional
 @Service
@@ -43,6 +44,12 @@ class TicketService(
         val message = Message(command.body, principalId)
         val ticket = getTicket(ticketId)
         ticket.add(message)
+        ticketRepository.save(ticket)
+    }
+
+    fun deleteMessage(ticketId: Long, messageId: UUID, principalId: Long) {
+        val ticket = getTicket(ticketId)
+        ticket.deleteMessage(messageId, principalId)
         ticketRepository.save(ticket)
     }
 

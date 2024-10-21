@@ -1,76 +1,65 @@
 package wolfdesk.base.filter.jwt
 
-import io.jsonwebtoken.ExpiredJwtException
-import io.jsonwebtoken.security.SignatureException
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import wolfdesk.base.common.exception.JwtProviderException
+import wolfdesk.base.common.exception.JwtProviderException.JwtErrorType.SIGNATURE_INVALID
+import wolfdesk.base.common.exception.JwtProviderException.JwtErrorType.TOKEN_EXPIRED
 import java.time.Duration
 import java.time.LocalDateTime
 
-class JwtProviderTest{
-    private val memberId = "sim512@naver.com"
-    private val memberName = "김영철"
-    private val secretKey = "aaoisfjwaeoifnaweovnsaivonsadiovsahehrfoiwefnsdailfnsdailfsadnlfsa"
-    private val expiredDuration = Duration.ofSeconds(2)
+class JwtProviderTest {
 
     @Test
-    fun `JWT생성테스트`() {
-        val jwtProvider = jwtProvider()
-
-        val token = jwtProvider.generateToken(
-            memberId = memberId,
-            memberName = memberName,
-            LocalDateTime.now()
-        )
+    fun `JWT 생성테스트`() {
+        val provider = jwtProviderFixture()
+        val token = provider.generateToken(memberId = 1L)
 
         assertThat(token).isNotNull()
-        assertThat(jwtProvider.getMemberId(token)).isEqualTo(memberId)
+        assertThat(provider.extractMemberId(token)).isEqualTo(1L)
 
     }
 
     @Test
-    fun `JWT 유효성 테스트`() {
-        val validJwtProvider = jwtProvider()
+    fun `JWT 서명 테스트`() {
+        val validJwtProvider = jwtProviderFixture()
+        val invalidJwtProvider = jwtProviderFixture(secretKey = "B".repeat(64))
 
-        val invalidJwtProvider = JwtProvider(
-            JwtProperties(
-                secretKey = "ncvbmcbldghfsoifawjoifwaenoifwanoifawdfnsdoifnasdoifnawfoiawenifnwa",
-                expiredDuration = expiredDuration,
-            )
-        )
+        val invalidToken = invalidJwtProvider.generateToken(memberId = 1L)
 
-        val token = invalidJwtProvider.generateToken(
-            memberId = memberId,
-            memberName = memberName,
-            currentDate = LocalDateTime.now()
-        )
+        val exception = assertThrows<JwtProviderException> {
+            validJwtProvider.extractMemberId(invalidToken)
+        }
 
-        assertThrows<SignatureException> { validJwtProvider.validate(token) }
+        assertThat(exception.type).isEqualTo(SIGNATURE_INVALID)
     }
 
     @Test
     fun `JWT 만료 테스트`() {
-        val validJwtProvider = jwtProvider()
-
-        val now = LocalDateTime.now()
-        val yesterday = now.minusDays(1)
-
+        val validJwtProvider = jwtProviderFixture()
         val expiredToken = validJwtProvider.generateToken(
-            memberId = memberId,
-            memberName = memberName,
-            yesterday,
+            memberId = 1L,
+            now = LocalDateTime.now().minusDays(7),
         )
 
-        assertThrows<ExpiredJwtException> { validJwtProvider.validate(expiredToken) }
-    }
+        val exception = assertThrows<JwtProviderException> {
+            validJwtProvider.extractMemberId(expiredToken)
+        }
 
-    private fun jwtProvider(): JwtProvider {
-        return JwtProvider(
-            JwtProperties(
-                secretKey = secretKey,
-                expiredDuration = Duration.ofSeconds(2),
-            )
-        )
+        assertThat(exception.type).isEqualTo(TOKEN_EXPIRED)
+
     }
+}
+
+fun jwtProviderFixture(
+    secretKey: String = "A".repeat(64),
+    duration: Duration = Duration.ofMinutes(10)
+): JwtProvider {
+    return JwtProvider(
+        properties = JwtProperties(
+            secretKey = secretKey,
+            expired = duration,
+        )
+    )
 }

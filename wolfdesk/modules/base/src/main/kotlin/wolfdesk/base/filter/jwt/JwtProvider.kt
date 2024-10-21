@@ -1,53 +1,64 @@
 package wolfdesk.base.filter.jwt
 
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import io.jsonwebtoken.security.SignatureException
 import org.springframework.stereotype.Component
+import wolfdesk.base.common.exception.JwtProviderException
+import wolfdesk.base.support.toDate
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.*
 import javax.crypto.SecretKey
 
 
 @Component
 class JwtProvider(
-    private val jwtProperties: JwtProperties,
+    private val properties: JwtProperties,
 ) {
 
     /**
      * 토큰 생성
      */
-    fun generateToken(memberId: String, memberName: String, currentDate: LocalDateTime): String {
+    fun generateToken(
+        memberId: Long,
+        now: LocalDateTime = LocalDateTime.now()
+    ): String {
+        val nowDate = now.toDate()
         return Jwts.builder()
-            .subject(memberId)
-            .claim("memberName", memberName)
-            .issuedAt(Date())
-            .expiration(expirationTime(currentDate))
+            .subject(memberId.toString())
+            .issuedAt(nowDate)
+            .expiration(expirationDate(nowDate))
             .signWith(getSigningKey())
             .compact()
     }
 
-    private fun expirationTime(currentDate: LocalDateTime): Date {
-        val expiration = Date(
-            Date.from(currentDate.atZone(ZoneId.systemDefault()).toInstant()).time + jwtProperties.expiredTime
-        )
-        return expiration
+    private fun expirationDate(date: Date): Date {
+        val nowDate = date.time
+        val expired = properties.expired.toMillis()
+        return Date(nowDate + expired)
     }
 
     /**
      * 토큰을 통해 회원 ID 추출
      */
-    fun getMemberId(token: String): String {
-        return extractClaims(token).subject
+    fun extractMemberId(token: String): Long {
+        return try {
+            extractClaims(token).subject.toLong()
+        } catch (e: JwtException) {
+            throw e.convert()
+        }
     }
 
-    /**
-     * 유효하지 않은 토큰인지 검증
-     */
-    fun validate(token: String) {
-        extractClaims(token)
+    private fun JwtException.convert(): JwtProviderException {
+        return when (this) {
+            is ExpiredJwtException -> JwtProviderException.EXPIRED
+            is SignatureException -> JwtProviderException.INVALID_SIGNATURE
+            else -> JwtProviderException(null, "Invalid token")
+        }
     }
 
     // 토큰 claims 정보 추출
@@ -60,7 +71,7 @@ class JwtProvider(
     }
 
     private fun getSigningKey(): SecretKey {
-        val keyBytes = Decoders.BASE64.decode(jwtProperties.secretKey)
+        val keyBytes = Decoders.BASE64.decode(properties.secretKey)
         return Keys.hmacShaKeyFor(keyBytes)
     }
 }

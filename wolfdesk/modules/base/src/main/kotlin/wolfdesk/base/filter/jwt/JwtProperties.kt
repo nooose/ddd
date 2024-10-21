@@ -6,7 +6,5 @@ import java.time.Duration
 @ConfigurationProperties(prefix = "jwt")
 data class JwtProperties(
     val secretKey: String,
-    val expiredDuration: Duration,
-) {
-    val expiredTime = expiredDuration.toMillis()
-}
+    val expired: Duration,
+)

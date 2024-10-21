@@ -20,4 +20,4 @@ spring:
 
 jwt:
   secret-key: ${SECRET_KEY}
-  expired-duration: 5m
+  expired: 5m

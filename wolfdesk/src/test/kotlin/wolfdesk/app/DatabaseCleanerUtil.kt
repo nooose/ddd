@@ -5,5 +5,6 @@ object DatabaseCleanerUtil {
 
     fun truncate() {
         databaseCleaner.truncateTables()
+        println("Database truncated")
     }
 }

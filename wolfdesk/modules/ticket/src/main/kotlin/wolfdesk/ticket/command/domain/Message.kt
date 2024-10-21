@@ -1,6 +1,9 @@
 package wolfdesk.ticket.command.domain
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 import java.time.LocalDateTime
 import java.util.*
 
@@ -15,4 +18,9 @@ class Message(
     val createdAt: LocalDateTime = LocalDateTime.now(),
     @Id @Column(columnDefinition = "binary(16)")
     val id: UUID = UUID.randomUUID()
-)
+) {
+
+    fun validateOwner(ownerId: Long) {
+        check(createdById == ownerId) { "메시지 작성자가 아닙니다." }
+    }
+}

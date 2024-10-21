@@ -2,6 +2,7 @@ package wolfdesk.ticket.command.domain
 
 import jakarta.persistence.*
 import org.springframework.data.domain.AbstractAggregateRoot
+import java.util.*
 
 @Table(name = "ticket")
 @Entity
@@ -23,6 +24,13 @@ class Ticket(
     fun add(message: Message) {
         messages.add(message)
         registerEvent(MessageAddedEvent(message))
+    }
+
+    fun deleteMessage(messageId: UUID, messageCreatedById: Long) {
+        val message = messages.first { it.id == messageId }
+        message.validateOwner(messageCreatedById)
+        messages.remove(message)
+        registerEvent(MessageDeletedEvent(messageId))
     }
 
     fun assign(agentId: Long) {

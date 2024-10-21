@@ -1,5 +1,6 @@
 package wolfdesk.app
 
+import wolfdesk.ticket.command.application.MessageCreateCommand
 import wolfdesk.ticket.command.application.TicketCreateCommand
 
 fun createTicketCreateCommandFixture(
@@ -13,5 +14,13 @@ fun createTicketCreateCommandFixture(
         description = description,
         tenantId = tenantId,
         supportCategoryId = supportCategoryId,
+    )
+}
+
+fun createMessageAddCommandFixture(
+    body: String = "테스트 메시지 내용"
+): MessageCreateCommand {
+    return MessageCreateCommand(
+        body = body
     )
 }

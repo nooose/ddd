@@ -8,7 +8,8 @@ import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SignatureException
 import org.springframework.stereotype.Component
-import wolfdesk.base.common.exception.JwtProviderException
+import wolfdesk.base.common.exception.ExpiredTokenException
+import wolfdesk.base.common.exception.InvalidSignatureTokenException
 import wolfdesk.base.support.toDate
 import java.time.LocalDateTime
 import java.util.*
@@ -53,11 +54,11 @@ class JwtProvider(
         }
     }
 
-    private fun JwtException.convert(): JwtProviderException {
+    private fun JwtException.convert(): Exception {
         return when (this) {
-            is ExpiredJwtException -> JwtProviderException.EXPIRED
-            is SignatureException -> JwtProviderException.INVALID_SIGNATURE
-            else -> JwtProviderException(null, "Invalid token")
+            is ExpiredJwtException -> ExpiredTokenException("토큰이 만료되었습니다")
+            is SignatureException -> InvalidSignatureTokenException("서명이 올바르지않습니다.")
+            else -> IllegalStateException("Invalid token")
         }
     }
 

@@ -9,12 +9,13 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import wolfdesk.base.security.SecurityConfig
 import wolfdesk.base.support.bearerToken
 
 @Component
 class JwtFilter(
     private val jwtProvider: JwtProvider,
-    private val userDetailsService: UserDetailsService
+    private val userDetailsService: UserDetailsService,
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -22,12 +23,24 @@ class JwtFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val token = request.bearerToken()
-        if (token.isNullOrBlank()) {
+        if (shouldSkipFilter(request)) {
             filterChain.doFilter(request, response)
             return
         }
 
+        val token = request.bearerToken()
+        if (!isToken(token)) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "인증 실패 - 토큰이 없습니다")
+            return
+        }
+
+        authenticateUser(token!!, request)
+        filterChain.doFilter(request, response)
+    }
+
+    private fun isToken(token: String?) = token.isNullOrBlank()
+
+    private fun authenticateUser(token: String, request: HttpServletRequest) {
         val memberId = jwtProvider.extractMemberId(token)
 
         if (SecurityContextHolder.getContext().authentication == null) {
@@ -39,7 +52,9 @@ class JwtFilter(
             authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
             SecurityContextHolder.getContext().authentication = authentication
         }
-
-        filterChain.doFilter(request, response)
     }
+
+    private fun shouldSkipFilter(request: HttpServletRequest) =
+        request.requestURI in SecurityConfig.PERMITALL_URIS
 }
+

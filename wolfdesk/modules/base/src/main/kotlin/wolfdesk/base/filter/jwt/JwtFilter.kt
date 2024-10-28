@@ -29,7 +29,7 @@ class JwtFilter(
         }
 
         val token = request.bearerToken()
-        if (!isToken(token)) {
+        if (isTokenAbsent(token)) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "인증 실패 - 토큰이 없습니다")
             return
         }
@@ -38,7 +38,7 @@ class JwtFilter(
         filterChain.doFilter(request, response)
     }
 
-    private fun isToken(token: String?) = token.isNullOrBlank()
+    private fun isTokenAbsent(token: String?) = token.isNullOrBlank()
 
     private fun authenticateUser(token: String, request: HttpServletRequest) {
         val memberId = jwtProvider.extractMemberId(token)

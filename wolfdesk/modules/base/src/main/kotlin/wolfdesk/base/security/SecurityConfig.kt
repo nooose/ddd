@@ -13,12 +13,6 @@ import wolfdesk.base.filter.jwt.JwtFilter
 class SecurityConfig(
     private val jwtFilter: JwtFilter,
 ) {
-    companion object {
-        val PERMITALL_URIS = setOf(
-            "/members/login",
-            "/members/register",
-        )
-    }
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -36,7 +30,6 @@ class SecurityConfig(
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
 
-            httpBasic { }
             formLogin { disable() }
 
             addFilterBefore<UsernamePasswordAuthenticationFilter>(jwtFilter)
@@ -44,4 +37,12 @@ class SecurityConfig(
 
         return http.build()
     }
+
+    companion object {
+        val PERMITALL_URIS = setOf(
+            "/members/login",
+            "/members/register",
+        )
+    }
+
 }

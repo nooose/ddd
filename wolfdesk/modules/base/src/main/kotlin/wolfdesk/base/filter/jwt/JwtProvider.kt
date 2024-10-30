@@ -23,6 +23,7 @@ class JwtProvider(
 
     /**
      * 토큰 생성
+     * TODO: 향후 권한이 추가되면 memberId + 권한리스트가 담긴 객체를 받아 토큰생성 시 권한도 claim 으로 추가해줘야한다
      */
     fun generateToken(
         memberId: Long,

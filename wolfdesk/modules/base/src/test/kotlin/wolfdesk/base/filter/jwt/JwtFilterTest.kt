@@ -26,7 +26,7 @@ class JwtFilterTest : StringSpec({
     val filterChain = mockk<FilterChain>(relaxed = true)
     val response = MockHttpServletResponse()
 
-    val memberId = 1L
+    val memberPrincipal = MemberPrincipal(memberId = 1L)
     val shouldFilterURI = "/members/info"
     val shouldNotFilterURI = "/members/login"
 
@@ -46,7 +46,7 @@ class JwtFilterTest : StringSpec({
     }
 
     "요청과 함께 온 token의 서명이 올바르지 않을 경우 예외가 발생한다" {
-        val invalidToken = invalidJwtProvider.generateToken(memberId = memberId)
+        val invalidToken = invalidJwtProvider.generateToken(memberPrincipal = memberPrincipal)
         val request = mockRequest(invalidToken)
 
         shouldThrow<InvalidSignatureTokenException> {
@@ -56,7 +56,7 @@ class JwtFilterTest : StringSpec({
 
     "요청과 함께 온 token이 만료되었을 경우 예외가 발생한다" {
         val expiredToken = validJwtProvider.generateToken(
-            memberId = memberId,
+            memberPrincipal = memberPrincipal,
             now = LocalDateTime.now().minusDays(7),
         )
         val request = mockRequest(expiredToken)
@@ -67,7 +67,7 @@ class JwtFilterTest : StringSpec({
     }
 
     "요청과 함께 온 token이 유효할 경우 사용자 인증이 이루어진다" {
-        val validToken = validJwtProvider.generateToken(memberId = memberId)
+        val validToken = validJwtProvider.generateToken(memberPrincipal = memberPrincipal)
         val request = mockRequest(validToken)
 
         filter.doFilter(request, response, filterChain)
@@ -76,12 +76,12 @@ class JwtFilterTest : StringSpec({
         val principal: MemberPrincipal = authentication.principal as MemberPrincipal
 
         authentication shouldNotBe null
-        principal.memberId shouldBe memberId
+        principal.memberId shouldBe memberPrincipal.memberId
         authentication.authorities shouldBe emptyList()
     }
 
     "api 요청 주소가 PERMIT_ALL_URIS 인 경우 authentication 는 null 이다" {
-        val validToken = validJwtProvider.generateToken(memberId = memberId)
+        val validToken = validJwtProvider.generateToken(memberPrincipal = memberPrincipal)
         val request = mockRequest(
             token = validToken,
             url = shouldNotFilterURI

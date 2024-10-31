@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import wolfdesk.base.filter.jwt.JwtFilter
@@ -13,7 +12,7 @@ import wolfdesk.base.filter.jwt.JwtFilter
 @Configuration
 class SecurityConfig(
     private val jwtFilter: JwtFilter,
-    private val customAuthenticationEntryPoint: AuthenticationEntryPoint,
+    private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
 ) {
 
     @Bean

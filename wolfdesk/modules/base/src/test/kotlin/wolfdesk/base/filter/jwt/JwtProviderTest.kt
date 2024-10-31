@@ -11,9 +11,11 @@ import java.time.LocalDateTime
 
 class JwtProviderTest : StringSpec({
 
+    val memberPrincipal = MemberPrincipal(1L)
+
     "jwt 를 생성하고 payload 를 읽어볼 수 있다" {
         val provider = jwtProviderFixture()
-        val token = provider.generateToken(memberId = 1L)
+        val token = provider.generateToken(memberPrincipal = memberPrincipal)
 
         token shouldNotBe null
         provider.extractMemberPrincipal(token).memberId shouldBe 1L
@@ -22,7 +24,7 @@ class JwtProviderTest : StringSpec({
     "jwt 서명이 유효하지 않으면 예외를 던진다" {
         val validJwtProvider = jwtProviderFixture()
         val invalidJwtProvider = jwtProviderFixture(secretKey = "B".repeat(64))
-        val invalidToken = invalidJwtProvider.generateToken(memberId = 1L)
+        val invalidToken = invalidJwtProvider.generateToken(memberPrincipal = memberPrincipal)
 
         shouldThrow<InvalidSignatureTokenException> {
             validJwtProvider.extractMemberPrincipal(invalidToken)
@@ -32,7 +34,7 @@ class JwtProviderTest : StringSpec({
     "jwt 의 유효기간이 만료되면 예외가 던진다" {
         val validJwtProvider = jwtProviderFixture()
         val expiredToken = validJwtProvider.generateToken(
-            memberId = 1L,
+            memberPrincipal = memberPrincipal,
             now = LocalDateTime.now().minusDays(7),
         )
 

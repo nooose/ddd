@@ -26,12 +26,12 @@ class JwtProvider(
      * TODO: 향후 권한이 추가되면 memberId + 권한리스트가 담긴 객체를 받아 토큰생성 시 권한도 claim 으로 추가해줘야한다
      */
     fun generateToken(
-        memberId: Long,
+        memberPrincipal: MemberPrincipal,
         now: LocalDateTime = LocalDateTime.now()
     ): String {
         val nowDate = now.toDate()
         return Jwts.builder()
-            .subject(memberId.toString())
+            .subject(memberPrincipal.memberId.toString())
             .issuedAt(nowDate)
             .expiration(expirationDate(nowDate))
             .signWith(getSigningKey())

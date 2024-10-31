@@ -38,4 +38,3 @@ class JwtFilter(
         return request.requestURI in SecurityConfig.PERMIT_ALL_URIS
     }
 }
-

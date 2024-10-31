@@ -70,11 +70,7 @@ class JwtFilterTest : StringSpec({
         val validToken = validJwtProvider.generateToken(memberId = memberId)
         val request = mockRequest(validToken)
 
-        filter.doFilter(
-            request,
-            response,
-            filterChain,
-        )
+        filter.doFilter(request, response, filterChain)
 
         val authentication = SecurityContextHolder.getContext().authentication
         val principal: MemberPrincipal = authentication.principal as MemberPrincipal
@@ -91,13 +87,10 @@ class JwtFilterTest : StringSpec({
             url = shouldNotFilterURI
         )
 
-        filter.doFilter(
-            request,
-            response,
-            filterChain,
-        )
+        filter.doFilter(request, response, filterChain)
 
         val authentication = SecurityContextHolder.getContext().authentication
+
         authentication shouldBe null
     }
 
@@ -105,11 +98,7 @@ class JwtFilterTest : StringSpec({
         val request = mockRequest(url = shouldFilterURI)
 
         shouldThrow<AuthenticationException> {
-            filter.doFilter(
-                request,
-                response,
-                filterChain,
-            )
+            filter.doFilter(request, response, filterChain)
         }
     }
 })

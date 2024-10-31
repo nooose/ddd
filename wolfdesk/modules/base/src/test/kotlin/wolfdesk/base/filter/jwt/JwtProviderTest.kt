@@ -16,7 +16,7 @@ class JwtProviderTest : StringSpec({
         val token = provider.generateToken(memberId = 1L)
 
         token shouldNotBe null
-        provider.extractMemberId(token) shouldBe 1L
+        provider.extractMemberPrincipal(token).memberId shouldBe 1L
     }
 
     "jwt 서명이 유효하지 않으면 예외를 던진다" {
@@ -25,7 +25,7 @@ class JwtProviderTest : StringSpec({
         val invalidToken = invalidJwtProvider.generateToken(memberId = 1L)
 
         shouldThrow<InvalidSignatureTokenException> {
-            validJwtProvider.extractMemberId(invalidToken)
+            validJwtProvider.extractMemberPrincipal(invalidToken)
         }
     }
 
@@ -37,7 +37,7 @@ class JwtProviderTest : StringSpec({
         )
 
         shouldThrow<ExpiredTokenException> {
-            validJwtProvider.extractMemberId(expiredToken)
+            validJwtProvider.extractMemberPrincipal(expiredToken)
         }
     }
 })

@@ -45,11 +45,12 @@ class JwtProvider(
     }
 
     /**
-     * 토큰을 통해 회원 ID 추출
+     * 토큰을 통해 회원 정보 추출
      */
-    fun extractMemberId(token: String): Long {
+    fun extractMemberPrincipal(token: String): MemberPrincipal {
         return try {
-            extractClaims(token).subject.toLong()
+            // TODO: 나중에 권한 추가되면 권한도 같이 넣어야함
+            MemberPrincipal(memberId = extractClaims(token).subject.toLong())
         } catch (e: JwtException) {
             throw e.convert()
         }

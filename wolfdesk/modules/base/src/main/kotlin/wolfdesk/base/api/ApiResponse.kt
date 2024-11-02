@@ -6,11 +6,16 @@ import com.fasterxml.jackson.annotation.JsonInclude
 data class ApiResponse<T>(
     val data: T?,
     val message: String,
+    val isSuccess: Boolean,
 ) {
 
     companion object {
         fun <T : Any> success(data: T? = null): ApiResponse<T> {
-            return ApiResponse(data, "SUCCESS")
+            return ApiResponse(data, "SUCCESS", true)
+        }
+
+        fun <T : Any> error(message: String): ApiResponse<T> {
+            return ApiResponse(null, message, false)
         }
     }
 }

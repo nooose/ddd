@@ -5,25 +5,25 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.security.core.AuthenticationException
-import org.springframework.security.web.AuthenticationEntryPoint
+import org.springframework.security.access.AccessDeniedException
+import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.stereotype.Component
 import wolfdesk.base.api.ApiResponse
 
 @Component
-class CustomAuthenticationEntryPoint(
+class CustomAccessDeniedHandler(
     private val mapper: ObjectMapper,
-) : AuthenticationEntryPoint {
-    override fun commence(
+) : AccessDeniedHandler {
+
+    override fun handle(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        authException: AuthenticationException
+        accessDeniedException: AccessDeniedException
     ) {
-        val exceptionMessage = authException.message ?: ""
-        val errorResponse = ApiResponse.error<String>(exceptionMessage)
+        val errorResponse = ApiResponse.error<String>(accessDeniedException.message ?: "")
         val errorJson = mapper.writeValueAsString(errorResponse)
         response.contentType = MediaType.APPLICATION_JSON_VALUE
-        response.status = HttpStatus.UNAUTHORIZED.value()
+        response.status = HttpStatus.FORBIDDEN.value()
         response.writer.write(errorJson)
     }
 }

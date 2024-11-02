@@ -1,4 +1,4 @@
-package wolfdesk.base.filter.jwt
+package wolfdesk.base.security.filter.jwt
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
@@ -10,6 +10,7 @@ import io.jsonwebtoken.security.SignatureException
 import org.springframework.stereotype.Component
 import wolfdesk.base.common.exception.ExpiredTokenException
 import wolfdesk.base.common.exception.InvalidSignatureTokenException
+import wolfdesk.base.security.MemberPrincipal
 import wolfdesk.base.support.toDate
 import java.time.LocalDateTime
 import java.util.*
@@ -22,7 +23,6 @@ class JwtProvider(
 ) {
 
     /**
-     * 토큰 생성
      * TODO: 향후 권한이 추가되면 memberId + 권한리스트가 담긴 객체를 받아 토큰생성 시 권한도 claim 으로 추가해줘야한다
      */
     fun generateToken(
@@ -44,9 +44,6 @@ class JwtProvider(
         return Date(nowDate + expired)
     }
 
-    /**
-     * 토큰을 통해 회원 정보 추출
-     */
     fun extractMemberPrincipal(token: String): MemberPrincipal {
         return try {
             // TODO: 나중에 권한 추가되면 권한도 같이 넣어야함
@@ -64,7 +61,6 @@ class JwtProvider(
         }
     }
 
-    // 토큰 claims 정보 추출
     private fun extractClaims(token: String): Claims {
         return Jwts.parser()
             .verifyWith(getSigningKey())

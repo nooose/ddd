@@ -6,6 +6,9 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import wolfdesk.base.common.exception.ExpiredTokenException
 import wolfdesk.base.common.exception.InvalidSignatureTokenException
+import wolfdesk.base.security.MemberPrincipal
+import wolfdesk.base.security.filter.jwt.JwtProperties
+import wolfdesk.base.security.filter.jwt.JwtProvider
 import java.time.Duration
 import java.time.LocalDateTime
 

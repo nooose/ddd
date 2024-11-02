@@ -2,12 +2,15 @@ package wolfdesk.base.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import wolfdesk.base.filter.jwt.JwtFilter
+import org.springframework.security.web.access.ExceptionTranslationFilter
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher
+import org.springframework.security.web.util.matcher.RequestMatchers.anyOf
+import wolfdesk.base.security.filter.jwt.JwtFilter
 
 @Configuration
 class SecurityConfig(
@@ -21,9 +24,7 @@ class SecurityConfig(
             csrf { disable() }
 
             authorizeHttpRequests {
-                PERMIT_ALL_URIS.forEach {
-                    authorize(it, permitAll)
-                }
+                authorize(PERMIT_ALL_PATTERNS, permitAll)
                 authorize(anyRequest, authenticated)
             }
 
@@ -36,18 +37,16 @@ class SecurityConfig(
             }
 
             formLogin { disable() }
-
-            addFilterBefore<UsernamePasswordAuthenticationFilter>(jwtFilter)
+            addFilterAfter<ExceptionTranslationFilter>(jwtFilter)
         }
 
         return http.build()
     }
 
     companion object {
-        val PERMIT_ALL_URIS = setOf(
-            "/members/login",
-            "/members/register",
-        )
+        val PERMIT_ALL_PATTERNS = anyOf(
+            antMatcher(HttpMethod.POST, "/members/token"),
+            antMatcher(HttpMethod.POST, "/members"),
+        )!!
     }
-
 }

@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
         "wolfdesk.agent.domain",
         "wolfdesk.tenant.domain",
         "wolfdesk.ticket.command.domain",
+        "wolfdesk.member.domain",
     ]
 )
 @EnableJpaRepositories(

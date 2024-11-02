@@ -4,8 +4,8 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
-import wolfdesk.base.filter.jwt.JwtProvider
-import wolfdesk.base.filter.jwt.MemberPrincipal
+import wolfdesk.base.security.filter.jwt.JwtProvider
+import wolfdesk.base.security.MemberPrincipal
 import wolfdesk.member.domain.Member
 import wolfdesk.member.domain.MemberRepository
 

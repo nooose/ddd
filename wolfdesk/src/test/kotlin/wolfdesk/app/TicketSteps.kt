@@ -14,6 +14,22 @@ fun 티켓생성(command: TicketCreateCommand): Response {
     }
 }
 
+fun 티켓열림(ticketId: Long): Response {
+    return Given {
+        and()
+    } When {
+        post("/tickets/$ticketId/open")
+    }
+}
+
+fun 티켓열림(ticketLocation: String): Response {
+    return Given {
+        and()
+    } When {
+        post("$ticketLocation/open")
+    }
+}
+
 fun 티켓목록조회(): Response {
     return Given {
         and()

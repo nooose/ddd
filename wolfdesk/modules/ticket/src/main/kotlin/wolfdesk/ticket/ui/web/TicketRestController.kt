@@ -27,6 +27,12 @@ class TicketRestController(
         return ResponseEntity.created(uri).body(body)
     }
 
+    @PostMapping("/tickets/{ticketId}/open")
+    fun openTicket(@PathVariable ticketId: Long): ApiResponse<Unit> {
+        ticketService.open(ticketId, 1)
+        return ApiResponse.success()
+    }
+
     @PostMapping("/tickets/{ticketId}/messages")
     fun addMessage(
         @PathVariable("ticketId") ticketId: Long,

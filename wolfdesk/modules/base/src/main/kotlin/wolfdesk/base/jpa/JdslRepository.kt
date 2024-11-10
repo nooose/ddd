@@ -36,9 +36,9 @@ class JdslRepository(
             .filterNotNull()
     }
 
-    fun <T : Any> findAll(limit: Int?, init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): List<T> {
+    fun <T : Any> findAll(offset: Int?, limit: Int?, init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): List<T> {
         CurrentFunNameHolder.funName = Thread.currentThread().callerName
-        return jdslJpqlExecutor.findAll(limit) { init() }
+        return jdslJpqlExecutor.findAll(offset = offset, limit = limit) { init() }
             .filterNotNull()
     }
 

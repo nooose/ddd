@@ -49,6 +49,7 @@ subprojects {
     }
 
     dependencies {
+        implementation("org.springframework.boot:spring-boot-starter-security")
         implementation("org.springframework.boot:spring-boot-starter-actuator")
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -65,6 +66,7 @@ subprojects {
             exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
             exclude(group = "org.mockito")
         }
+        testImplementation("io.mockk:mockk:${mockkVersion}")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
         testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
         testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
@@ -94,11 +96,11 @@ dependencies {
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
+    testImplementation("io.mockk:mockk:${mockkVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(group = "org.mockito")
     }
-    testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")

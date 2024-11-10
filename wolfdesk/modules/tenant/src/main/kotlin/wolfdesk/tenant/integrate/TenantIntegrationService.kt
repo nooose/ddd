@@ -1,7 +1,9 @@
 package wolfdesk.tenant.integrate
 
+import org.springframework.modulith.NamedInterface
 import org.springframework.stereotype.Service
 
+@NamedInterface("tenant-integrate")
 @Service
 class TenantIntegrationService {
 

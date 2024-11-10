@@ -25,6 +25,7 @@ val kotestVersion = "5.9.1"
 val kotestSpringVersion = "1.3.0"
 val jdslVersion = "3.5.2"
 val mockkVersion = "1.13.10"
+extra["springModulithVersion"] = "1.2.4"
 
 subprojects {
     apply {
@@ -54,6 +55,7 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         implementation("org.springframework.boot:spring-boot-starter-validation")
         implementation("org.springframework.boot:spring-boot-starter-web")
+        implementation("org.springframework.modulith:spring-modulith-starter-core")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         runtimeOnly("com.h2database:h2")
@@ -72,6 +74,14 @@ subprojects {
         testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
         testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        testImplementation("org.springframework.modulith:spring-modulith-starter-test")
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.ai:spring-ai-bom:1.0.0-M3")
+            mavenBom("org.springframework.modulith:spring-modulith-bom:${property("springModulithVersion")}")
+        }
     }
 
     tasks.withType<Test> {
@@ -90,6 +100,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.modulith:spring-modulith-starter-core")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -108,6 +119,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("io.rest-assured:kotlin-extensions")
+    testImplementation("org.springframework.modulith:spring-modulith-starter-test")
 
     implementation(project(":modules:base"))
     implementation(project(":modules:member"))
@@ -118,6 +130,7 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom("org.springframework.ai:spring-ai-bom:1.0.0-M3")
+        mavenBom("org.springframework.modulith:spring-modulith-bom:${property("springModulithVersion")}")
     }
 }
 

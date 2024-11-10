@@ -22,5 +22,5 @@ spring:
         highlight_sql: true
 
 jwt:
-  secret-key: ${SECRET_KEY:s3cr3tK3y!Th1sIsARandomStringWith64CharactersIncludingSecretKey3}
+  secret-key: ${SECRET_KEY:30cac16ea2cd7eddede293f73861868802d6fd2d95fc7fd138eb6dbc48223fe9}
   expired: 5m

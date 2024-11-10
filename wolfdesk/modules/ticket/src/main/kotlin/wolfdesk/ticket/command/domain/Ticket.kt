@@ -7,7 +7,7 @@ import java.util.*
 @Table(name = "ticket")
 @Entity
 class Ticket(
-    val information: TicketInformation,
+    var information: TicketInformation,
     messages: List<Message> = emptyList(),
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L
@@ -34,13 +34,13 @@ class Ticket(
     }
 
     fun assign(agentId: Long) {
-        information.agentId = agentId
+        this.information = information.copy(agentId = agentId)
         registerEvent(TicketAssignedEvent(id, agentId))
     }
 
     fun open(createdById: Long) {
         check(information.isOwner(createdById)) { "티켓의 생성자가 오픈할 수 있습니다." }
-        information.state = State.OPEN
+        this.information = information.copy(state = State.OPEN)
         registerEvent(TicketOpenedEvent(this.id))
     }
 }

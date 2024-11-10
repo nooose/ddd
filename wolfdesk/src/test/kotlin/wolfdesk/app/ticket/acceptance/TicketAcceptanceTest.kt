@@ -9,12 +9,14 @@ import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import wolfdesk.app.*
+import wolfdesk.ticket.command.domain.TicketOpenedEvent
 
 @DisplayName("티켓 인수 테스트")
 @AcceptanceTest
 class TicketAcceptanceTest(
     @LocalServerPort
-    private val port: Int
+    private val port: Int,
+    private val eventRecords: EventRecords,
 ) : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
 
@@ -59,9 +61,18 @@ class TicketAcceptanceTest(
                 response.getList<Any>("data.messages") shouldHaveSize 0
             }
         }
+
+        When("티켓을 열면") {
+            티켓열림(location)
+
+            Then("티켓 열림 이벤트가 발행된다.") {
+                eventRecords.count<TicketOpenedEvent>() shouldBe 1
+            }
+        }
     }
 
     afterContainer {
         DatabaseCleanerUtil.truncate()
+        eventRecords.clear()
     }
 })

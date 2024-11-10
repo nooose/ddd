@@ -9,21 +9,21 @@ import java.time.LocalDateTime
 @Embeddable
 data class TicketInformation(
     @Column(nullable = false)
-    var title: String,
+    val title: String,
     @Column(nullable = false, columnDefinition = "TEXT")
-    var description: String,
+    val description: String,
     @Column(nullable = false)
     val supportCategoryId: Long,
     @Column(nullable = false)
     val createdById: Long,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var priority: Priority = Priority.LOW,
+    val priority: Priority = Priority.LOW,
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var state: State = State.NONE,
-    var closedById: Long? = null,
-    var agentId: Long? = null,
+    val state: State = State.NONE,
+    val closedById: Long? = null,
+    val agentId: Long? = null,
     @Column(nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now(),
 ) {

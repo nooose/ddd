@@ -15,6 +15,7 @@ import org.springframework.http.MediaType
 fun initRestAssured(port: Int) {
     RestAssured.requestSpecification = RequestSpecBuilder()
         .setPort(port)
+        .setUrlEncodingEnabled(true)
         .setContentType(MediaType.APPLICATION_JSON_VALUE)
         .log(LogDetail.ALL)
         .build()

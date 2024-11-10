@@ -5,6 +5,7 @@ import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 
@@ -51,6 +52,13 @@ class TicketTest : StringSpec({
         shouldThrow<IllegalStateException> {
             ticket.deleteMessage(message.id, 2)
         }
+    }
+
+    "티켓을 열 수 있다." {
+        val ticket = createTicketFixture()
+
+        shouldNotThrowAny { ticket.open(1) }
+        ticket.information.isOpened.shouldBeTrue()
     }
 })
 

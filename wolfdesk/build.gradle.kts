@@ -24,7 +24,6 @@ configurations {
 val kotestVersion = "5.9.1"
 val kotestSpringVersion = "1.3.0"
 val jdslVersion = "3.5.2"
-val jjwtVersion = "0.12.6"
 val mockkVersion = "1.13.10"
 
 subprojects {
@@ -67,6 +66,7 @@ subprojects {
             exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
             exclude(group = "org.mockito")
         }
+        testImplementation("io.mockk:mockk:${mockkVersion}")
         testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
         testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
         testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
@@ -96,6 +96,7 @@ dependencies {
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
+    testImplementation("io.mockk:mockk:${mockkVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(group = "org.mockito")

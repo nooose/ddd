@@ -36,19 +36,9 @@ class JwtFilterTest : StringSpec({
         SecurityContextHolder.getContext().authentication = null
     }
 
-    fun mockRequest(method: HttpMethod, token: String? = null, url: String = shouldFilterURI): MockHttpServletRequest {
-        return MockHttpServletRequest().apply {
-            this.method = method.name()
-            requestURI = url
-            token?.let {
-                addHeader(HttpHeaders.AUTHORIZATION, "Bearer $token")
-            }
-        }
-    }
-
     "JWT 서명이 올바르지 않을 경우 예외가 발생한다" {
         val invalidToken = invalidJwtProvider.generateToken(memberPrincipal = memberPrincipal)
-        val request = mockRequest(HttpMethod.POST, invalidToken)
+        val request = mockRequest(HttpMethod.POST, invalidToken.accessToken, shouldFilterURI)
 
         shouldThrow<InvalidSignatureTokenException> {
             jwtFilter.doFilter(request, response, filterChain)
@@ -60,7 +50,7 @@ class JwtFilterTest : StringSpec({
             memberPrincipal = memberPrincipal,
             now = LocalDateTime.now().minusDays(7),
         )
-        val request = mockRequest(HttpMethod.POST, expiredToken)
+        val request = mockRequest(HttpMethod.POST, expiredToken.accessToken, shouldFilterURI)
 
         shouldThrow<ExpiredTokenException> {
             jwtFilter.doFilter(request, response, filterChain)
@@ -69,7 +59,7 @@ class JwtFilterTest : StringSpec({
 
     "JWT가 유효할 경우 사용자 인증이 이루어진다" {
         val validToken = validJwtProvider.generateToken(memberPrincipal = memberPrincipal)
-        val request = mockRequest(HttpMethod.POST, validToken)
+        val request = mockRequest(HttpMethod.POST, validToken.accessToken, shouldFilterURI)
 
         jwtFilter.doFilter(request, response, filterChain)
 
@@ -83,7 +73,7 @@ class JwtFilterTest : StringSpec({
     }
 
     "헤더에 JWT가 없다면 인증되지 않는다" {
-        val request = mockRequest(HttpMethod.POST, url = shouldFilterURI)
+        val request = mockRequest(HttpMethod.POST, null, shouldFilterURI)
         jwtFilter.doFilter(request, response, filterChain)
 
         val authentication = SecurityContextHolder.getContext().authentication
@@ -91,3 +81,13 @@ class JwtFilterTest : StringSpec({
         authentication.isAuthenticated.shouldBeFalse()
     }
 })
+
+private fun mockRequest(method: HttpMethod, token: String? = null, url: String): MockHttpServletRequest {
+    return MockHttpServletRequest().apply {
+        this.method = method.name()
+        requestURI = url
+        token?.let {
+            addHeader(HttpHeaders.AUTHORIZATION, "Bearer $token")
+        }
+    }
+}

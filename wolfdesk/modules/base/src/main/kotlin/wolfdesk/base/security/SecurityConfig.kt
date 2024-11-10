@@ -45,8 +45,8 @@ class SecurityConfig(
 
     companion object {
         val PERMIT_ALL_PATTERNS = anyOf(
-            antMatcher(HttpMethod.POST, "/members/token"),
             antMatcher(HttpMethod.POST, "/members"),
+            antMatcher(HttpMethod.POST, "/auth/token"),
         )!!
     }
 }

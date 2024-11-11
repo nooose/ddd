@@ -56,6 +56,7 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter-validation")
         implementation("org.springframework.boot:spring-boot-starter-web")
         implementation("org.springframework.modulith:spring-modulith-starter-core")
+        implementation("org.springframework.modulith:spring-modulith-starter-jdbc")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         runtimeOnly("com.h2database:h2")
@@ -101,6 +102,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.modulith:spring-modulith-starter-core")
+    implementation("org.springframework.modulith:spring-modulith-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

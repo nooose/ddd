@@ -21,6 +21,11 @@ spring:
         format_sql: true
         highlight_sql: true
 
+  modulith:
+    events:
+      jdbc:
+        schema-initialization:
+          enabled: true
 jwt:
-  secret-key: ${SECRET_KEY:s3cr3tK3y!Th1sIsARandomStringWith64CharactersIncludingSecretKey3}
+  secret-key: ${SECRET_KEY:05ae30dc50edb5c764b339b84b26838e2d394acf56a0709189758e75c8448fa0}
   expired: 5m

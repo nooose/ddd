@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component
 import wolfdesk.base.common.exception.ExpiredTokenException
 import wolfdesk.base.common.exception.InvalidSignatureTokenException
 import wolfdesk.base.security.MemberPrincipal
+import wolfdesk.base.security.TokenResponse
 import wolfdesk.base.support.toDate
 import java.time.LocalDateTime
 import java.util.*
@@ -28,14 +29,15 @@ class JwtProvider(
     fun generateToken(
         memberPrincipal: MemberPrincipal,
         now: LocalDateTime = LocalDateTime.now()
-    ): String {
+    ): TokenResponse {
         val nowDate = now.toDate()
-        return Jwts.builder()
+        val jwt = Jwts.builder()
             .subject(memberPrincipal.memberId.toString())
             .issuedAt(nowDate)
             .expiration(expirationDate(nowDate))
             .signWith(getSigningKey())
             .compact()
+        return TokenResponse(jwt)
     }
 
     private fun expirationDate(date: Date): Date {

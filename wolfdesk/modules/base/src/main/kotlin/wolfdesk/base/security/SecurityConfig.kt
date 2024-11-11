@@ -35,6 +35,7 @@ class SecurityConfig(
             exceptionHandling {
                 authenticationEntryPoint = customAuthenticationEntryPoint
             }
+            formLogin { disable() }
             addFilterAfter<ExceptionTranslationFilter>(jwtFilter)
         }
 

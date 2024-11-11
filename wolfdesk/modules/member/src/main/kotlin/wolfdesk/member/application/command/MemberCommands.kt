@@ -14,3 +14,11 @@ data class MemberJoinCommand(
     @field:Email(message = "Email should be valid")
     val email: String,
 )
+
+data class MemberLoginCommand(
+    @field:Email
+    @field:NotBlank
+    val email: String,
+
+    val password: Password,
+)

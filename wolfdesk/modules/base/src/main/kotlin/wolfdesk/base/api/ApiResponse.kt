@@ -10,6 +10,10 @@ data class ApiResponse<T>(
 ) {
 
     companion object {
+        fun success(): ApiResponse<Unit> {
+            return ApiResponse(null, "SUCCESS", true)
+        }
+
         fun <T : Any> success(data: T? = null): ApiResponse<T> {
             return ApiResponse(data, "SUCCESS", true)
         }

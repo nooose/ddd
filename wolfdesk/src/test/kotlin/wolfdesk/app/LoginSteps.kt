@@ -5,7 +5,7 @@ import io.restassured.module.kotlin.extensions.When
 import io.restassured.response.Response
 import org.springframework.http.HttpStatus
 import wolfdesk.member.application.command.MemberJoinCommand
-import wolfdesk.member.application.query.MemberLoginCommand
+import wolfdesk.member.application.command.MemberLoginCommand
 
 fun 로그인(email: String, password: String): String {
     가입(createJoinCommandFixture(name = "김영철", email = email, password = password))

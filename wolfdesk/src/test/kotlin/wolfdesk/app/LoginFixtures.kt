@@ -2,7 +2,7 @@ package wolfdesk.app
 
 import wolfdesk.base.security.Password
 import wolfdesk.member.application.command.MemberJoinCommand
-import wolfdesk.member.application.query.MemberLoginCommand
+import wolfdesk.member.application.command.MemberLoginCommand
 
 fun createJoinCommandFixture(
     name: String = "김영철",

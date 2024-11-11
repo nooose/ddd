@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import wolfdesk.base.api.ApiResponse
 import wolfdesk.base.security.TokenResponse
+import wolfdesk.member.application.command.MemberLoginCommand
 import wolfdesk.member.application.command.MemberLoginService
-import wolfdesk.member.application.query.MemberLoginCommand
 
 @RestController
 class AuthController(

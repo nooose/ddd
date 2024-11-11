@@ -28,4 +28,4 @@ spring:
           enabled: true
 jwt:
   secret-key: ${SECRET_KEY:05ae30dc50edb5c764b339b84b26838e2d394acf56a0709189758e75c8448fa0}
-  expired: 5m
+  expired: 1h

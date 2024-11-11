@@ -22,21 +22,19 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             csrf { disable() }
-
+            headers {
+                frameOptions { sameOrigin = true }
+            }
             authorizeHttpRequests {
                 authorize(PERMIT_ALL_PATTERNS, permitAll)
                 authorize(anyRequest, authenticated)
             }
-
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
-
             exceptionHandling {
                 authenticationEntryPoint = customAuthenticationEntryPoint
             }
-
-            formLogin { disable() }
             addFilterAfter<ExceptionTranslationFilter>(jwtFilter)
         }
 
@@ -45,6 +43,7 @@ class SecurityConfig(
 
     companion object {
         val PERMIT_ALL_PATTERNS = anyOf(
+            antMatcher("/h2-console/**"),
             antMatcher(HttpMethod.POST, "/members/token"),
             antMatcher(HttpMethod.POST, "/members"),
         )!!

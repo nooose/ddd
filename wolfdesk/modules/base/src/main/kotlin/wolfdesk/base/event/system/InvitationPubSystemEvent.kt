@@ -1,11 +1,11 @@
-package wolfdesk.base.event
+package wolfdesk.base.event.system
 
-data class InvitationSystemEvent(
+data class InvitationPubSystemEvent(
     val invitationId: Long,
     val tenantId: Long,
     val inviteeId: Long,
     val type: Type,
-) : SystemEvent() {
+) : PubSystemEvent() {
 
     enum class Type {
         ACCEPTED,

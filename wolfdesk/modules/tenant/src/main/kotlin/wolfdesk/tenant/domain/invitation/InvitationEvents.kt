@@ -7,9 +7,9 @@ data class InvitedEvent(
     val tenantId: Long,
     val memberId: Long,
     val type: InvitationType
-) : InvitationDomainEvent()
+)
 
 data class TenantInviteConfirmedEvent(
-    val id: Long,
+    val invitationId: Long,
     val status: InvitationStatus,
-) : InvitationDomainEvent()
+)

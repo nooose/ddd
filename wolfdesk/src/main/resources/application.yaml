@@ -5,11 +5,9 @@ spring:
   application:
     name: wolfdesk
   datasource:
-    url: jdbc:h2:mem:${spring.application.name}
-    username: root
-  h2:
-    console:
-      enabled: true
+    url: jdbc:postgresql://localhost:5432/wolfdesk
+    username: wolfdesk
+    password: wolfdesk
 
   jpa:
     open-in-view: false
@@ -20,6 +18,11 @@ spring:
       hibernate:
         format_sql: true
         highlight_sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
   modulith:
     events:

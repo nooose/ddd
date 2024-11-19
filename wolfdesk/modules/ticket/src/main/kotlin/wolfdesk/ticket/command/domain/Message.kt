@@ -16,7 +16,7 @@ class Message(
     val createdById: Long,
     @Column(nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    @Id @Column(columnDefinition = "binary(16)")
+    @Id @Column
     val id: UUID = UUID.randomUUID()
 ) {
 

@@ -20,7 +20,7 @@ class CustomAccessDeniedHandler(
         response: HttpServletResponse,
         accessDeniedException: AccessDeniedException
     ) {
-        val errorResponse = ApiResponse.error<String>(accessDeniedException.message ?: "")
+        val errorResponse = ApiResponse.error(accessDeniedException.message ?: "")
         val errorJson = mapper.writeValueAsString(errorResponse)
         response.contentType = MediaType.APPLICATION_JSON_VALUE
         response.status = HttpStatus.FORBIDDEN.value()

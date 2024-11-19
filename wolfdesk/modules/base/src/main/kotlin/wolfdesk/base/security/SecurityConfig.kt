@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.access.ExceptionTranslationFilter
+import org.springframework.security.web.access.intercept.AuthorizationFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher
 import org.springframework.security.web.util.matcher.RequestMatchers.anyOf
 import wolfdesk.base.security.filter.jwt.JwtFilter
@@ -36,7 +36,7 @@ class SecurityConfig(
                 authenticationEntryPoint = customAuthenticationEntryPoint
             }
             formLogin { disable() }
-            addFilterAfter<ExceptionTranslationFilter>(jwtFilter)
+            addFilterBefore<AuthorizationFilter>(jwtFilter)
         }
 
         return http.build()
@@ -44,8 +44,8 @@ class SecurityConfig(
 
     companion object {
         val PERMIT_ALL_PATTERNS = anyOf(
-            antMatcher("/h2-console/**"),
             antMatcher(HttpMethod.GET, "/ai"),
+            antMatcher(HttpMethod.POST, "/coupons"),
             antMatcher(HttpMethod.POST, "/auth/token"),
             antMatcher(HttpMethod.POST, "/members"),
         )!!

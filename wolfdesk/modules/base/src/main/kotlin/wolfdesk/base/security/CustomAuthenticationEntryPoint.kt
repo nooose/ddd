@@ -20,7 +20,7 @@ class CustomAuthenticationEntryPoint(
         authException: AuthenticationException
     ) {
         val exceptionMessage = authException.message ?: ""
-        val errorResponse = ApiResponse.error<String>(exceptionMessage)
+        val errorResponse = ApiResponse.error(exceptionMessage)
         val errorJson = mapper.writeValueAsString(errorResponse)
         response.contentType = MediaType.APPLICATION_JSON_VALUE
         response.status = HttpStatus.UNAUTHORIZED.value()

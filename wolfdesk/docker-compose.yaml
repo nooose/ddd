@@ -1,0 +1,13 @@
+services:
+  database:
+    image: postgres:15.2
+    ports:
+      - '5432'
+    environment:
+      - 'POSTGRES_USER=wolfdesk'
+      - 'POSTGRES_DB=wolfdesk'
+      - 'POSTGRES_PASSWORD=wolfdesk'
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"

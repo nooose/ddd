@@ -50,16 +50,15 @@ subprojects {
     }
 
     dependencies {
-        implementation("org.springframework.boot:spring-boot-starter-security")
         implementation("org.springframework.boot:spring-boot-starter-actuator")
         implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         implementation("org.springframework.boot:spring-boot-starter-validation")
         implementation("org.springframework.boot:spring-boot-starter-web")
+        implementation("org.springframework.boot:spring-boot-starter-data-redis")
         implementation("org.springframework.modulith:spring-modulith-starter-core")
         implementation("org.springframework.modulith:spring-modulith-starter-jdbc")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
-        runtimeOnly("com.h2database:h2")
         implementation("com.linecorp.kotlin-jdsl:jpql-dsl:${jdslVersion}")
         implementation("com.linecorp.kotlin-jdsl:jpql-render:${jdslVersion}")
         implementation("com.linecorp.kotlin-jdsl:spring-data-jpa-support:${jdslVersion}")
@@ -105,6 +104,8 @@ dependencies {
     implementation("org.springframework.modulith:spring-modulith-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+    runtimeOnly("org.postgresql:postgresql")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -119,6 +120,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("com.h2database:h2")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("io.rest-assured:kotlin-extensions")
     testImplementation("org.springframework.modulith:spring-modulith-starter-test")
@@ -127,6 +129,7 @@ dependencies {
     implementation(project(":modules:member"))
     implementation(project(":modules:tenant"))
     implementation(project(":modules:ticket"))
+    implementation(project(":modules:coupon"))
 }
 
 dependencyManagement {

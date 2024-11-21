@@ -16,10 +16,6 @@ class Tenant(
     val createdAt: LocalDateTime = LocalDateTime.now(),
 ) : AbstractAggregateRoot<Tenant>() {
 
-    init {
-        registerEvent(TenantCreatedEvent(id, createdBy))
-    }
-
     fun validateOwner(createdBy: Long) {
         check(this.createdBy == createdBy) { "$createdBy 테넌트 관리자가 아닙니다." }
     }

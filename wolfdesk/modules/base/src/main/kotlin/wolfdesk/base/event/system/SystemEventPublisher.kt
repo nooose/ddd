@@ -7,15 +7,21 @@ import org.springframework.transaction.event.TransactionalEventListener
 import wolfdesk.base.event.EventPublishAdaptor
 
 @Component
-internal class SystemEventPublisher(
+class SystemEventPublisher(
     private val delegator: ApplicationEventPublisher,
-    private val adaptors: List<EventPublishAdaptor>
+    private val adaptors: List<EventPublishAdaptor<*, *>>
 ) {
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
-    fun onApplicationEvent(event: Any) {
+    fun publishEvent(event: Any) {
+        if (event is SystemEvent) {
+            return
+        }
         adaptors.filter { adaptor -> adaptor.supports(event) }
-            .map { adaptor -> adaptor.convert(event) }
+            .map { adaptor ->
+                val castedAdaptor = adaptor as EventPublishAdaptor<Any, SystemEvent>
+                castedAdaptor.convert(event)
+            }
             .forEach { systemEvent -> delegator.publishEvent(systemEvent) }
     }
 }

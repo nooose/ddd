@@ -1,9 +1,10 @@
 package wolfdesk.base.event
 
-import wolfdesk.base.event.system.PubSystemEvent
+import wolfdesk.base.event.system.SystemEvent
 
-interface EventPublishAdaptor {
-    fun convert(event: Any): PubSystemEvent
+interface EventPublishAdaptor<T : Any, R : SystemEvent> {
+
+    fun convert(event: T): R
 
     fun supports(event: Any): Boolean
 }

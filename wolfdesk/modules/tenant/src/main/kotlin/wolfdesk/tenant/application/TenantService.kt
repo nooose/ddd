@@ -1,13 +1,16 @@
 package wolfdesk.tenant.application
 
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import wolfdesk.tenant.domain.tenant.Tenant
+import wolfdesk.tenant.domain.tenant.TenantCreatedEvent
 import wolfdesk.tenant.domain.tenant.TenantRepository
 
 @Transactional
 @Service
 class TenantService(
+    private val eventPublisher: ApplicationEventPublisher,
     private val tenantRepository: TenantRepository,
 ) {
 
@@ -20,6 +23,7 @@ class TenantService(
             createdBy = principalId,
         )
         tenantRepository.save(newTenant)
+        eventPublisher.publishEvent(TenantCreatedEvent(newTenant.id, principalId))
         return newTenant.id
     }
 }

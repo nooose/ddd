@@ -1,9 +1,9 @@
 package wolfdesk.base.event.system
 
-data class TenantPubSystemEvent(
+data class TenantSystemEvent(
     val tenantId: Long,
     val type: Type,
-) : PubSystemEvent() {
+) : SystemEvent() {
     enum class Type {
         CREATED,
         DELETED,

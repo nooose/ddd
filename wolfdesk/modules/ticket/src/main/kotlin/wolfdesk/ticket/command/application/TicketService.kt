@@ -43,7 +43,7 @@ class TicketService(
     fun addMessage(ticketId: Long, command: MessageCreateCommand, principalId: Long) {
         val message = Message(command.body, principalId)
         val ticket = getTicket(ticketId)
-        ticket.add(message)
+        ticket.addMessage(message)
         ticketRepository.save(ticket)
     }
 

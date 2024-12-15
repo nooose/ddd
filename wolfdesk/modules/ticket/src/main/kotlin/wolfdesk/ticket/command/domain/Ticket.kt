@@ -13,15 +13,11 @@ class Ticket(
     val id: Long = 0L
 ) : AbstractAggregateRoot<Ticket>() {
 
-    init {
-        registerEvent(TicketCreatedEvent(this))
-    }
-
     @JoinColumn(name = "ticket_id", nullable = false, updatable = false)
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
     val messages: MutableList<Message> = messages.toMutableList()
 
-    fun add(message: Message) {
+    fun addMessage(message: Message) {
         messages.add(message)
         registerEvent(MessageAddedEvent(message))
     }

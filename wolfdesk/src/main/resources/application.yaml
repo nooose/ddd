@@ -29,6 +29,12 @@ spring:
       jdbc:
         schema-initialization:
           enabled: true
+
+  docker:
+    compose:
+      skip:
+        in-tests: false
+      lifecycle-management: start_and_stop
 jwt:
   secret-key: ${SECRET_KEY:05ae30dc50edb5c764b339b84b26838e2d394acf56a0709189758e75c8448fa0}
   expired: 1h

@@ -32,8 +32,8 @@ class TicketTest : StringSpec({
         val message1 = createMessageFixture(createdBy = 1)
         val message2 = createMessageFixture(createdBy = 1)
 
-        ticket.add(message1)
-        ticket.add(message2)
+        ticket.addMessage(message1)
+        ticket.addMessage(message2)
         ticket.deleteMessage(message2.id, 1)
 
         val message = ticket.messages.first()
@@ -47,7 +47,7 @@ class TicketTest : StringSpec({
     "티켓 메시지 삭제 시 메시지 생성자가 아니면 예외를 던진다." {
         val ticket = createTicketFixture()
         val message = createMessageFixture(createdBy = 1)
-        ticket.add(message)
+        ticket.addMessage(message)
 
         shouldThrow<IllegalStateException> {
             ticket.deleteMessage(message.id, 2)

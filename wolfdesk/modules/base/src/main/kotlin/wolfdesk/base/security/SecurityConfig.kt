@@ -11,10 +11,12 @@ import org.springframework.security.web.access.intercept.AuthorizationFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher
 import org.springframework.security.web.util.matcher.RequestMatchers.anyOf
 import wolfdesk.base.security.filter.jwt.JwtFilter
+import wolfdesk.base.security.filter.limiter.RateLimiterFilter
 
 @Configuration
 class SecurityConfig(
     private val jwtFilter: JwtFilter,
+    private val rateLimiterFilter: RateLimiterFilter,
     private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
 ) {
 
@@ -37,6 +39,7 @@ class SecurityConfig(
             }
             formLogin { disable() }
             addFilterBefore<AuthorizationFilter>(jwtFilter)
+            addFilterAfter<JwtFilter>(rateLimiterFilter)
         }
 
         return http.build()
@@ -45,7 +48,6 @@ class SecurityConfig(
     companion object {
         val PERMIT_ALL_PATTERNS = anyOf(
             antMatcher(HttpMethod.GET, "/ai"),
-            antMatcher(HttpMethod.POST, "/coupons"),
             antMatcher(HttpMethod.POST, "/auth/token"),
             antMatcher(HttpMethod.POST, "/members"),
         )!!

@@ -25,5 +25,6 @@ class CustomAuthenticationEntryPoint(
         response.contentType = MediaType.APPLICATION_JSON_VALUE
         response.status = HttpStatus.UNAUTHORIZED.value()
         response.writer.write(errorJson)
+        response.characterEncoding = "UTF-8"
     }
 }

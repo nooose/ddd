@@ -1,0 +1,21 @@
+schema: |
+  definition member {}
+  
+  definition group {
+    relation parent: group
+    relation host: member
+    relation member: member
+    
+      permission write = host + parent + parent->member + parent->write
+      permission read = write + member
+    }
+      
+  definition ticket {
+    relation owner: member
+    relation group: group
+  
+    permission write = owner + group->write
+    permission read = write + group->member
+  }
+
+relationships: ""

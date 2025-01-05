@@ -7,8 +7,8 @@ import org.springframework.ai.vectorstore.VectorStore
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 
-@Profile("!test")
-@Service
+//@Profile("!test")
+//@Service
 class AiQuestionService(
     private val client: ChatClient,
     private val vectorStore: VectorStore,

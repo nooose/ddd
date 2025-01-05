@@ -5,5 +5,6 @@ include(
     "modules:member",
     "modules:tenant",
     "modules:ticket",
-    "modules:coupon"
+    "modules:coupon",
+    "modules:rbac"
 )

@@ -50,6 +50,8 @@ class SecurityConfig(
             antMatcher(HttpMethod.GET, "/ai"),
             antMatcher(HttpMethod.POST, "/auth/token"),
             antMatcher(HttpMethod.POST, "/members"),
+            antMatcher("/permit"),
+            antMatcher("/subjects"),
         )!!
     }
 }

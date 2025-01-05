@@ -130,6 +130,7 @@ dependencies {
     implementation(project(":modules:tenant"))
     implementation(project(":modules:ticket"))
     implementation(project(":modules:coupon"))
+    implementation(project(":modules:rbac"))
 }
 
 dependencyManagement {

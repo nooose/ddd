@@ -37,3 +37,32 @@ services:
       # Replace CLUSTER_ID with a unique base64 UUID using "bin/kafka-storage.sh random-uuid"
       # See https://docs.confluent.io/kafka/operations-tools/kafka-tools.html#kafka-storage-sh
       CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+
+  spicedb:
+    image: authzed/spicedb:v1.39.1
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "50051:50051"
+    command: serve
+    environment:
+      TZ: "Asia/Seoul"
+
+      SPICEDB_GRPC_ENABLED: "true"
+      SPICEDB_GRPC_ADDR: ":50051"
+      SPICEDB_GRPC_PRESHARED_KEY: "wolfdesk"
+
+      SPICEDB_DATASTORE_ENGINE: "postgres"
+      SPICEDB_DATASTORE_CONN_URI: "postgres://wolfdesk:wolfdesk@database:5432/wolfdesk?sslmode=disable"
+
+  migrate:
+    image: authzed/spicedb:v1.39.1
+    restart: on-failure
+    depends_on:
+      - database
+    command: migrate head
+    environment:
+      TZ: "Asia/Seoul"
+      SPICEDB_DATASTORE_ENGINE: "postgres"
+      SPICEDB_DATASTORE_CONN_URI: "postgres://wolfdesk:wolfdesk@database:5432/wolfdesk?sslmode=disable"

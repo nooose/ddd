@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service
 import java.time.Duration
 import java.util.concurrent.ConcurrentHashMap
 
-
 @Service
 class RateLimiter {
 

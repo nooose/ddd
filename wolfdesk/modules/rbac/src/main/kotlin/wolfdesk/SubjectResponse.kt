@@ -1,6 +1,11 @@
 package wolfdesk
 
 data class SubjectResponse(
-    val subject: SubjectType,
     val id: String,
+    val type: SubjectType,
+)
+
+data class ResourceResponse(
+    val id: String,
+    val type: ResourceType,
 )

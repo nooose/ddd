@@ -1,6 +1,6 @@
 package wolfdesk
 
-enum class Relation(
+enum class RelationType(
     val value: String,
 ) {
     GROUP_HOST("host"),

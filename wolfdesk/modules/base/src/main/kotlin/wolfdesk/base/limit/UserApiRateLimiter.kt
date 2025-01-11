@@ -2,17 +2,17 @@ package wolfdesk.base.limit
 
 import io.github.bucket4j.BandwidthBuilder
 import io.github.bucket4j.Bucket
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 import java.time.Duration
 import java.util.concurrent.ConcurrentHashMap
 
-@Service
-class RateLimiter {
+@Component
+class UserApiRateLimiter {
 
-    private val _buckets: MutableMap<Long, Bucket> = ConcurrentHashMap()
+    private val _buckets: MutableMap<UserApiRequest, Bucket> = ConcurrentHashMap()
 
-    fun acquire(id: Long) {
-        val bucket = this._buckets.computeIfAbsent(id) { createNewBucket() }
+    fun acquire(request: UserApiRequest) {
+        val bucket = this._buckets.computeIfAbsent(request) { createNewBucket() }
         val tryConsume = bucket.tryConsume(1)
         if (!tryConsume) {
             throw TooManyRequestException("허용된 요청 수를 초과했습니다.")
